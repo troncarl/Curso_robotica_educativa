@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuitos Electrónicos - Robótica</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #00f3ff;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Navegación */
+        nav {
+            background-color: #090d16;
+            padding: 1rem 2rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid de Circuitos */
+        .grid-circuitos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .card-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid #334155;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación con rutas relativas -->
+    <nav>
+        <ul>
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="electronica.html" class="active">Electrónica</a></li>
+            <li><a href="programacion.html">Programación</a></li>
+            <li><a href="proyectos.html">Proyectos</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Circuitos Electrónicos</h1>
+            <p>Aprende los fundamentos de electrónica analógica y digital aplicados a la robótica.</p>
+        </header>
+
+        <main class="grid-circuitos">
+            <!-- Tarjeta 1 -->
+            <article class="card">
+                <Image src="image_agent_tag_14546172941919817409" alt="Circuito básico con LED y resistencia sobre protoboard" caption="Circuito LED en Protoboard" />
+                <div class="card-content">
+                    <h3>Circuito Básico con LED</h3>
+                    <p>El punto de partida fundamental. Aprende a calcular la resistencia limitadora para no quemar tus diodos LED al alimentarlos con distintas fuentes de voltaje.</p>
+                </div>
+            </article>
+
+            <!-- Tarjeta 2 -->
+            <article class="card">
+                <Image src="image_agent_tag_14546172941919813752" alt="Prototipo de circuito electrónico con sensor ultrasónico y microcontrolador" caption="Integración de Sensores" />
+                <div class="card-content">
+                    <h3>Acondicionamiento de Sensores</h3>
+                    <p>Conexión e interfaz de sensores de distancia, temperatura y movimiento hacia entradas analógicas o digitales de un microcontrolador.</p>
+                </div>
+            </article>
+
+            <!-- Tarjeta 3 -->
+            <article class="card">
+                <div class="card-content" style="padding-top: 2rem;">
+                    <h3>Control de Actuadores y Motores</h3>
+                    <p>Uso de transistores, puentes H (como el L298N) y relés para controlar cargas de potencia como servomotores y motores DC sin dañar la tarjeta de control.</p>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Plataforma de Robótica y Electrónica</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robótica Educativa</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #06b6d4;
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--secondary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* Cards & Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Steps & Process Flow */
+        .flow-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin: 2rem 0;
+            font-weight: bold;
+        }
+
+        .flow-step {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+        }
+
+        /* List Styling */
+        ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Course Modules Section */
+        .module-card {
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .module-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .module-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Microcontroller Highlight Box */
+        .highlight-box {
+            background: linear-gradient(to right, #f0f9ff, #e0f2fe);
+            border-left: 5px solid var(--accent);
+            padding: 2rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+        }
+
+        /* FAQ Accordion-style layout */
+        .faq-item {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .faq-item h4 {
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: #94a3b8;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Robótica Educativa</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="electronica.html">Electrónica</a></li>
+                <li><a href="#circuitos">Circuitos</a></li>
+                <li><a href="#programacion">Programación</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" id="inicio">
+        <h1>ROBÓTICA EDUCATIVA</h1>
+        <p>Aprende, crea y transforma ideas en proyectos reales</p>
+        <a href="#modulos" class="btn">Explora el Curso</a>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>Aprender Robótica es Aprender Haciendo</h2>
+            <p>La Robótica Educativa es una forma práctica y divertida de aprender tecnología mediante la creación de robots, circuitos y sistemas programables.</p>
+            <p>En este curso aprenderemos a combinar conocimientos de electrónica, circuitos y programación para construir proyectos que puedan interactuar con el mundo que nos rodea.</p>
+            <p>La robótica no consiste solamente en construir robots. También nos enseña a observar un problema, pensar en una solución, diseñarla, construirla, probarla y mejorarla.</p>
+        </section>
+
+        <section class="grid-2">
+            <div class="card">
+                <h2>¿Qué es la Robótica Educativa?</h2>
+                <p>Utiliza robots, sensores, componentes electrónicos y herramientas de programación como recursos para desarrollar conocimientos y habilidades.</p>
+                <p>A través de proyectos prácticos, los estudiantes pueden comprender conceptos de tecnología, electrónica, programación, automatización y resolución de problemas.</p>
+            </div>
+            <div class="card" style="background-color: #f1f5f9;">
+                <h3>Ejemplo Práctico</h3>
+                <p><em>“Quiero que una luz se encienda cuando detecte movimiento”.</em></p>
+                <p><strong>Para conseguirlo aprenderemos:</strong></p>
+                <ul>
+                    <li>Cómo funciona la electricidad y qué es un circuito.</li>
+                    <li>Cómo conectar correctamente los componentes.</li>
+                    <li>Cómo utilizar un sensor y programar un microcontrolador.</li>
+                    <li>Cómo hacer pruebas y corregir errores.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>¿Por qué aprender Robótica?</h2>
+            <p>La robótica permite aprender tecnología de una manera activa. En lugar de limitarse a leer cómo funciona un dispositivo, el estudiante puede construirlo, programarlo, probarlo y modificarlo.</p>
+            
+            <div class="grid-2" style="margin-top: 1.5rem;">
+                <div class="card">
+                    <h3>Preguntas que nos impulsan</h3>
+                    <p>Durante el proceso aparecen desafíos que obligan a buscar soluciones:</p>
+                    <ul>
+                        <li>¿Por qué el motor no gira?</li>
+                        <li>¿Por qué el sensor no detecta correctamente?</li>
+                        <li>¿Por qué el programa no funciona?</li>
+                        <li>¿Por qué el robot se mueve hacia el lado equivocado?</li>
+                    </ul>
+                    <p><strong>Cada problema se convierte en una oportunidad para aprender.</strong></p>
+                </div>
+                <div class="card">
+                    <h3>Integración de Conocimientos</h3>
+                    <p>En un mismo proyecto relacionamos múltiples áreas de manera transversal:</p>
+                    <ul>
+                        <li>Matemáticas y Física</li>
+                        <li>Informática y Programación</li>
+                        <li>Electrónica</li>
+                        <li>Creatividad y Diseño</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="highlight-box">
+            <h2>El corazón de nuestros proyectos: El microcontrolador</h2>
+            <p>En nuestros proyectos podemos utilizar un <strong>ESP32</strong>, un microcontrolador que permite conectar sensores, actuadores y otros componentes electrónicos, además de ofrecer capacidades de comunicación. El microcontrolador funciona como una especie de cerebro del proyecto.</p>
+            
+            <div class="flow-container">
+                <span class="flow-step">Sensor (ej. Movimiento)</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">ESP32</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Programa</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Actuador (ej. LED o Alarma)</span>
+            </div>
+        </section>
+
+        <section id="modulos">
+            <h2>Ruta de Aprendizaje</h2>
+            <p>El aprendizaje será progresivo. Nuestra ruta es: <strong>Electrónica ➔ Circuitos ➔ Programación ➔ Proyectos</strong></p>
+            
+            <div class="grid-3" style="margin-top: 2rem;">
+                <div class="card module-card" id="electronica">
+                    <div>
+                        <h3>1. ELECTRÓNICA</h3>
+                        <p>Aprenderemos los fundamentos necesarios para comprender los componentes electrónicos y su funcionamiento físico.</p>
+                        <small>Voltaje, Corriente, Resistencia, Potencia, Señales digitales/analógicas, Sensores, Actuadores y Fuentes de alimentación.</small>
+                    </div>
+                    <a href="#">Ir a Electrónica →</a>
+                </div>
+
+                <div class="card module-card" id="circuitos">
+                    <div>
+                        <h3>2. CIRCUITOS</h3>
+                        <p>Aprenderemos a transformar los conocimientos de electrónica en conexiones reales y seguras.</p>
+                        <small>Circuitos básicos, Entradas/Salidas, Motores, Servomotores, LEDs, Pulsadores y Módulos electrónicos.</small>
+                    </div>
+                    <a href="#">Ir a Circuitos →</a>
+                </div>
+
+                <div class="card module-card" id="programacion">
+                    <div>
+                        <h3>3. PROGRAMACIÓN</h3>
+                        <p>Aprenderemos a dar instrucciones a nuestros proyectos para que tomen decisiones automáticamente.</p>
+                        <small>Lectura de sensores, Control de motores, Secuencias, Lógica de control y Automatización de procesos.</small>
+                    </div>
+                    <a href="#">Ir a Programación →</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>¿Qué podemos crear?</h2>
+            <p>Convertimos ideas en prototipos funcionales:</p>
+            <div class="grid-3">
+                <div class="card">
+                    <h4>🚦 Semáforos inteligentes</h4>
+                    <p>Control de luces mediante tiempos programados.</p>
+                </div>
+                <div class="card">
+                    <h4>🚪 Puertas automáticas</h4>
+                    <p>Apertura mediante sensores y servomotores.</p>
+                </div>
+                <div class="card">
+                    <h4>💡 Iluminación automática</h4>
+                    <p>Luces activadas por movimiento o nivel de luz.</p>
+                </div>
+                <div class="card">
+                    <h4>🚨 Alarmas de seguridad</h4>
+                    <p>Sistemas de detección y alerta automatizados.</p>
+                </div>
+                <div class="card">
+                    <h4>🏎️ Vehículos y Seguidores de línea</h4>
+                    <p>Robots capaces de desplazarse y seguir rutas.</p>
+                </div>
+                <div class="card">
+                    <h4>🌱 Riego automático</h4>
+                    <p>Control de agua mediante sensores de humedad del suelo.</p>
+                </div>
+                <div class="card">
+                    <h4>📊 Estaciones de monitoreo</h4>
+                    <p>Medición de temperatura, humedad y distancia.</p>
+                </div>
+                <div class="card">
+                    <h4>🏠 Sistemas domóticos e IoT</h4>
+                    <p>Automatización del hogar y proyectos conectados a Internet.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid-2">
+            <div>
+                <h2>Habilidades que desarrollaremos</h2>
+                <ul>
+                    <li><strong>Resolución de problemas:</strong> Análisis y soluciones paso a paso.</li>
+                    <li><strong>Pensamiento lógico y crítico:</strong> Estructura de causa-efecto y análisis de errores.</li>
+                    <li><strong>Creatividad:</strong> Diseño de proyectos propios desde cero.</li>
+                    <li><strong>Trabajo por proyectos:</strong> Prototipado en etapas reales.</li>
+                    <li><strong>Experimentación y Perseverancia:</strong> Aprender del error y corregir.</li>
+                    <li><strong>Trabajo en equipo:</strong> Colaboración y distribución de tareas.</li>
+                </ul>
+            </div>
+            <div>
+                <h2>De una idea a un proyecto</h2>
+                <div class="flow-container" style="flex-direction: column; align-items: stretch;">
+                    <div class="flow-step">1. Identificar un problema</div>
+                    <div class="flow-step">2. Pensar una solución & Diseñar</div>
+                    <div class="flow-step">3. Construir & Programar</div>
+                    <div class="flow-step">4. Probar, Corregir y Mejorar</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq">
+            <h2>Preguntas Frecuentes</h2>
+            
+            <div class="faq-item">
+                <h4>¿Necesito saber programación o electrónica antes de comenzar?</h4>
+                <p>No. El contenido está organizado progresivamente para aprender todos los conceptos fundamentales desde cero durante el curso.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>¿Solamente construiremos robots?</h4>
+                <p>No. Trabajaremos también con sistemas automáticos, sensores, actuadores, domótica y proyectos tecnológicos diversos.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>¿Qué microcontrolador utilizaremos?</h4>
+                <p>Trabajaremos principalmente con el ESP32 debido a sus grandes capacidades y posibilidades para proyectos educativos conectados.</p>
+            </div>
+
+            <div class="faq-item">
+                <h4>¿Podré crear mis propios proyectos?</h4>
+                <p>¡Ese es el objetivo principal! A medida que mejores, podrás combinar conocimientos para diseñar tus propias soluciones.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <h2>Comienza tu aventura en la Robótica Educativa</h2>
+        <p style="margin: 1rem 0 2rem 0; color: #cbd5e1;">Descubre, construye, programa y convierte tus ideas en realidad.</p>
+        <p>© Robótica Educativa - Convierte tus ideas en soluciones tecnológicas</p>
+    </footer>
+
+</body>
+</html>

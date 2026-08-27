@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrónica para Robótica Educativa</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0f172a;
+            --accent: #06b6d4;
+            --bg-light: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #334155;
+            --text-dark: #0f172a;
+            --border: #e2e8f0;
+            --warning: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--secondary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 3.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 1.8rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Flow and Steps */
+        .flow-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+            font-weight: bold;
+        }
+
+        .flow-step {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        /* Highlight Boxes */
+        .highlight-box {
+            background: linear-gradient(to right, #f0f9ff, #e0f2fe);
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: #fef2f2;
+            border-left: 5px solid var(--warning);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .code-block {
+            background-color: var(--secondary);
+            color: #f1f5f9;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: #94a3b8;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MENÚ PRINCIPAL -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">Robótica Educativa</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="electronica.html">Electrónica</a></li>
+                <li><a href="index.html#circuitos">Circuitos</a></li>
+                <li><a href="index.html#programacion">Programación</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+        <h1>Electrónica para Robótica Educativa</h1>
+        <p>Bienvenidos al mundo de la electrónica. Detecta información del entorno, procésala y controla dispositivos.</p>
+    </header>
+
+    <div class="container">
+
+        <!-- INTRODUCCIÓN -->
+        <section>
+            <h2>Bases Fundamentales</h2>
+            <p>La electrónica es una de las bases fundamentales de la robótica. Gracias a ella podemos detectar información del entorno, procesarla y controlar diferentes dispositivos.</p>
+            <p>Un robot necesita energía para funcionar, componentes para interactuar con el mundo y circuitos que permitan conectar todos esos elementos. Más adelante, la programación permitirá indicarle al sistema qué debe hacer.</p>
+            <p>Aprenderemos desde los conceptos más básicos hasta los conocimientos necesarios para construir proyectos de robótica con microcontroladores como el ESP32.</p>
+            
+            <div class="flow-container">
+                <span class="flow-step">Electricidad</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Circuitos</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Componentes</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Medición</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Electrónica</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Robótica</span>
+            </div>
+        </section>
+
+        <!-- CONCEPTOS ELÉCTRICOS BÁSICOS -->
+        <section>
+            <h2>Magnitudes Eléctricas Fundamentales</h2>
+            <p>La electricidad está relacionada con la presencia y el movimiento de cargas eléctricas (generalmente electrones en materiales conductores). Para comprender los circuitos debemos dominar cuatro conceptos:</p>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>1. Carga Eléctrica</h3>
+                    <p>La materia está formada por átomos con protones (carga positiva) y electrones (carga negativa). En metales como el cobre, existen electrones que se desplazan con facilidad.</p>
+                    <p>Se mide en **culombios (C)**. 1 C corresponde aproximadamente a la carga de <strong>6,24 × 10¹⁸ electrones</strong>.</p>
+                </div>
+
+                <div class="card">
+                    <h3>2. Voltaje (V)</h3>
+                    <p>Es la diferencia de potencial eléctrico entre dos puntos. Es la "presión" o diferencia de energía que impulsa el movimiento de carga.</p>
+                    <p><strong>Ejemplos comunes:</strong></p>
+                    <ul>
+                        <li>Pila AA: ~1,5 V</li>
+                        <li>Batería: 9 V</li>
+                        <li>Señales lógicas: 3,3 V o 5 V</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>3. Corriente Eléctrica (I)</h3>
+                    <p>Representa la cantidad de carga que atraviesa una sección del circuito por unidad de tiempo. Se mide en **amperios (A)**.</p>
+                    <div class="code-block">1 A = 1 Culombio / segundo (1 C/s)</div>
+                    <p><em>Nota: La corriente consumida depende del circuito y de la resistencia aplicada.</em></p>
+                </div>
+
+                <div class="card">
+                    <h3>4. Resistencia Eléctrica (R)</h3>
+                    <p>Es la oposición que presenta un material o componente al paso de la corriente. Se mide en **ohmios (Ω)**.</p>
+                    <p>A mayor resistencia, menor será la corriente que circula manteniendo un mismo voltaje.</p>
+                </div>
+            </div>
+
+            <!-- ANALOGÍA DEL AGUA -->
+            <div class="highlight-box">
+                <h3>Analogía del Agua</h3>
+                <p>Para visualizar cómo funcionan estas magnitudes:</p>
+                <ul>
+                    <li><strong>Voltaje (V):</strong> Presión del agua en la tubería.</li>
+                    <li><strong>Corriente (I):</strong> Flujo o caudal de agua que pasa.</li>
+                    <li><strong>Resistencia (R):</strong> Estrechamiento en la tubería que dificulta el paso del agua.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- LEY DE OHM Y POTENCIA -->
+        <section>
+            <h2>Leyes y Cálculo Eléctrico</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Ley de Ohm</h3>
+                    <p>Establece la relación directa entre voltaje, corriente y resistencia:</p>
+                    <div class="code-block">V = I × R
+I = V / R
+R = V / I</div>
+                    <p><strong>Ejemplo práctico:</strong></p>
+                    <p>Si V = 5 V y R = 1000 Ω (1 kΩ):</p>
+                    <p>I = 5 / 1000 = <strong>0,005 A (5 mA)</strong></p>
+                </div>
+
+                <div class="card">
+                    <h3>Potencia y Energía Eléctrica</h3>
+                    <p>La **potencia (P)** indica la rapidez con la que se consume o transforma energía. Se mide en **vatios (W)**.</p>
+                    <div class="code-block">P = V × I   |   P = I² × R   |   P = V² / R</div>
+                    <p>La **energía (E)** representa el consumo total en un tiempo determinado: <strong>E = P × t</strong> (medido en Joules o Wh).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORRIENTE Y POLARIDAD -->
+        <section class="grid-2">
+            <div class="card">
+                <h2>Corriente Continua (DC) vs. Alterna (AC)</h2>
+                <p><strong>Corriente Continua (DC):</strong> La polaridad se mantiene constante. Es la que usaremos en robótica (baterías, power banks, ESP32).</p>
+                <p><strong>Corriente Alterna (AC):</strong> La tensión cambia de sentido periódicamente (red eléctrica de los hogares).</p>
+            </div>
+
+            <div class="card">
+                <h2>Polaridad y Referencias</h2>
+                <p>En fuentes DC identificamos el polo positivo (+) y negativo (−).</p>
+                <p>En placas y microcontroladores veremos:</p>
+                <ul>
+                    <li><strong>VCC / VDD:</strong> Alimentación.</li>
+                    <li><strong>GND (Ground):</strong> Tierra o referencia común de 0 V en el circuito.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ESTADOS DE UN CIRCUITO -->
+        <section>
+            <h2>Circuitos Eléctricos</h2>
+            <p>Un circuito es un camino cerrado por el que circula corriente. Consta de: <strong>Fuente ➔ Conductor ➔ Carga ➔ Conductor ➔ Fuente</strong>.</p>
+
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Circuito Abierto</h3>
+                    <p>Existe una interrupción en el camino eléctrico. La corriente se interrumpe (ej. un interruptor apagado).</p>
+                </div>
+                <div class="card">
+                    <h3>Circuito Cerrado</h3>
+                    <p>Camino completo sin interrupciones. La corriente fluye y activa los componentes.</p>
+                </div>
+                <div class="card warning-box" style="margin: 0;">
+                    <h3 style="color: var(--warning);">Cortocircuito</h3>
+                    <p>Conexión directa de muy baja resistencia entre puntos con diferente potencial (ej. conectar +5V directo a GND).</p>
+                    <p><strong>Peligro:</strong> Produce alto calor, daño de componentes o incendios.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIPOS DE CONEXIÓN -->
+        <section>
+            <h2>Configuración de Circuitos</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Circuitos en Serie</h3>
+                    <p>Los elementos se conectan uno tras otro en una sola trayectoria.</p>
+                    <ul>
+                        <li>La corriente es la misma en todo el camino.</li>
+                        <li>El voltaje se divide entre los componentes.</li>
+                        <li><strong>Rtotal = R1 + R2 + R3...</strong></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Circuitos en Paralelo</h3>
+                    <p>Los componentes están conectados entre los mismos dos puntos (nodos).</p>
+                    <ul>
+                        <li>El voltaje es igual en todas las ramas.</li>
+                        <li>La corriente total es la suma de cada rama.</li>
+                        <li><strong>1/Rtotal = 1/R1 + 1/R2...</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMPONENTES ELECTRÓNICOS -->
+        <section>
+            <h2>Componentes Electrónicos Principales</h2>
+            <p>Se dividen en **pasivos** (resistencias, capacitores) y **activos / semiconductores** (diodos, transistores, integrados).</p>
+
+            <div class="grid-2">
+                <!-- Resistencias -->
+                <div class="card">
+                    <h3>Resistencia (R)</h3>
+                    <p>Limita la corriente y establece niveles de voltaje. Símbolo: Ω.</p>
+                    <p><strong>Código de colores (4 bandas):</strong></p>
+                    <ul>
+                        <li>1ª y 2ª Banda: Dígitos.</li>
+                        <li>3ª Banda: Multiplicador.</li>
+                        <li>4ª Banda: Tolerancia (variación real ±%).</li>
+                    </ul>
+                    <p><small>Potencias comunes: 1/4 W, 1/2 W.</small></p>
+                </div>
+
+                <!-- LEDs -->
+                <div class="card">
+                    <h3>LED (Diodo Emisor de Luz)</h3>
+                    <p>Diodo semiconductor que emite luz al ser polarizado en directo.</p>
+                    <ul>
+                        <li><strong>Ánodo (+):</strong> Terminal más largo.</li>
+                        <li><strong>Cátodo (−):</strong> Terminal más corto, lado plano.</li>
+                    </ul>
+                    <div class="highlight-box" style="margin: 0.5rem 0 0 0;">
+                        <small><strong>Cálculo de Resistencia para LED:</strong><br>
+                        R = (Vfuente − VLED) / ILED<br>
+                        <em>Ejemplo para 5V y LED de 2V a 10mA: R = (5-2)/0.01 = 300 Ω ➔Usar 330 Ω.</em></small>
+                    </div>
+                </div>
+
+                <!-- Capacitores -->
+                <div class="card">
+                    <h3>Capacitores (C)</h3>
+                    <p>Almacenan energía en un campo eléctrico (medido en Faradios: pF, nF, µF). Usados para filtrar ruidos y estabilizar voltaje.</p>
+                    <ul>
+                        <li><strong>Cerámicos:</strong> Sin polaridad.</li>
+                        <li><strong>Electrolíticos:</strong> Polarizados (+ y -).</li>
+                    </ul>
+                </div>
+
+                <!-- Diodos -->
+                <div class="card">
+                    <h3>Diodos</h3>
+                    <p>Permiten el paso de corriente en un solo sentido (Ánodo ➔ Cátodo).</p>
+                    <p><strong>Tipos:</strong> Rectificadores, Zener, Schottky, LED, Fotodiodos.</p>
+                </div>
+
+                <!-- Transistores y MOSFETs -->
+                <div class="card">
+                    <h3>Transistores (BJT y MOSFET)</h3>
+                    <p>Funcionan como interruptores electrónicos o amplificadores.</p>
+                    <ul>
+                        <li><strong>BJT (NPN/PNP):</strong> Terminales Colector, Base y Emisor.</li>
+                        <li><strong>MOSFET:</strong> Ideales para manejar mayor potencia (Motores, Bombas). Terminales: Gate, Drain, Source.</li>
+                    </ul>
+                </div>
+
+                <!-- Interruptores y Sensores Pasivos -->
+                <div class="card">
+                    <h3>Entradas Pasivas (LDR, Termistor, Potenciómetro)</h3>
+                    <ul>
+                        <li><strong>Potenciómetro:</strong> Resistencia variable de 3 pines.</li>
+                        <li><strong>LDR:</strong> Resistencia que cambia con la luz.</li>
+                        <li><strong>Termistor (NTC/PTC):</strong> Resistencia sensible a la temperatura.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- POTENCIA Y PROTECCIÓN -->
+        <section>
+            <h2>Control de Potencia y Protección</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Relé</h3>
+                    <p>Interruptor electromecánico que permite a un microcontrolador controlar cargas de alto voltaje aisladas eléctricamente.</p>
+                </div>
+                <div class="card">
+                    <h3>Reguladores y Convertidores DC-DC</h3>
+                    <p>Cambian y estabilizan voltajes:</p>
+                    <ul>
+                        <li><strong>Buck:</strong> Reduce voltaje (ej. 12V ➔ 5V).</li>
+                        <li><strong>Boost:</strong> Aumenta voltaje (ej. 3.7V ➔ 5V).</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Protecciones</h3>
+                    <p>Fusibles, diodos de protección anti-retorno, sistemas de protección térmica y sobretensión para evitar daños permanentes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MONTAJE: PROTOBOARD Y PCB -->
+        <section>
+            <h2>Herramientas de Montaje y Construcción</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Protoboard (Breadboard)</h3>
+                    <p>Placa de pruebas sin soldadura. Permite armar y modificar circuitos rápidamente mediante conexiones internas de contactos metálicos.</p>
+                </div>
+                <div class="card">
+                    <h3>Placa de Circuito Impreso (PCB)</h3>
+                    <p>Placa definitiva con pistas de cobre. Elementos:</p>
+                    <ul>
+                        <li><strong>Pads:</strong> Puntos de soldadura.</li>
+                        <li><strong>Pistas:</strong> Caminos de cobre.</li>
+                        <li><strong>Vías:</strong> Conexiones entre capas.</li>
+                        <li><strong>Serigrafía:</strong> Texto con nombres de componentes (R1, LED1, etc.).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- INSTRUMENTACIÓN -->
+        <section>
+            <h2>El Multímetro y Mediciones</h2>
+            <p>Es la herramienta básica de diagnóstico. Reglas principales de uso:</p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medición</th>
+                            <th>Modo de Conexión</th>
+                            <th>Precaución Especial</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Voltaje (V)</strong></td>
+                            <td>En <strong>Paralelo</strong> con el componente</td>
+                            <td>Seleccionar el rango de V DC correcto.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resistencia (Ω)</strong></td>
+                            <td>En las terminales del componente</td>
+                            <td><strong>¡Circuito sin energía!</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Continuidad</strong></td>
+                            <td>Entre dos puntos aislados</td>
+                            <td>Emite pitido si hay conexión eléctrica.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Corriente (A)</strong></td>
+                            <td>En <strong>Serie</strong> dentro del circuito</td>
+                            <td><strong>¡Nunca colocar directo a VCC y GND!</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SEÑALES Y MICROCONTROLADORES -->
+        <section>
+            <h2>Señales en Robótica: Entradas y Salidas</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Señales Digitales vs Analógicas</h3>
+                    <p><strong>Digitales:</strong> Tienen solo dos estados: <code>HIGH</code> (1 / VCC) o <code>LOW</code> (0 / GND).</p>
+                    <p><strong>Analógicas:</strong> Varían en un rango continuo (ej. 0.5V, 1.8V, 3.1V).</p>
+                </div>
+                <div class="card">
+                    <h3>ADC y PWM</h3>
+                    <p><strong>ADC (Convertidor Analógico-Digital):</strong> Traduce voltajes continuos a números para el programa.</p>
+                    <p><strong>PWM (Modulación por Ancho de Pulso):</strong> Simula salidas analógicas variando el tiempo de encendido/apagado de pulsos digitales.</p>
+                </div>
+            </div>
+
+            <!-- ADAPTACIÓN DE VOLTAJES -->
+            <div class="warning-box">
+                <h3>¡Atención con los Niveles Lógicos (3,3 V vs 5 V)!</h3>
+                <p>El microcontrolador <strong>ESP32 trabaja con nivel lógico de 3,3 V</strong>. Conectar señales o sensores directamente de 5 V a un pin GPIO del ESP32 que no sea tolerante puede destruirlo. Utiliza un <strong>divisor de tensión</strong> o un adaptador de nivel lógico.</p>
+                <div class="code-block">Divisor de tensión: Vout = Vin × [ R2 / (R1 + R2) ]</div>
+            </div>
+        </section>
+
+        <!-- INTERFAZ DE POTENCIA CON ESP32 -->
+        <section class="highlight-box">
+            <h2>El ESP32 y la Interfaz de Potencia</h2>
+            <p><strong>Regla de oro:</strong> Un pin GPIO del ESP32 es para enviar y recibir <em>señales</em> de control, <strong>no para alimentar cargas pesadas</strong>.</p>
+
+            <div class="flow-container">
+                <span class="flow-step">ESP32 (3.3V Signal)</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Driver / Transistor / Relé</span>
+                <span class="flow-arrow">➔</span>
+                <span class="flow-step">Carga (Motor, Bomba, Solenoide)</span>
+            </div>
+        </section>
+
+        <!-- SENSORES Y ACTUADORES -->
+        <section>
+            <h2>Sensores y Actuadores</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Sensores (Entradas)</h3>
+                    <p>Convierten variables físicas en datos eléctricos:</p>
+                    <ul>
+                        <li><strong>HC-SR04:</strong> Distancia por ultrasonido.</li>
+                        <li><strong>DHT11 / DS18B20:</strong> Temperatura y humedad.</li>
+                        <li><strong>PIR:</strong> Detección de movimiento.</li>
+                        <li><strong>MPU6050:</strong> Acelerómetro y giroscopio.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Actuadores (Salidas)</h3>
+                    <p>Transforman órdenes eléctricas en acciones físicas:</p>
+                    <ul>
+                        <li><strong>Motor DC:</strong> Requiere Puente H (Driver).</li>
+                        <li><strong>Servomotor (SG90):</strong> Control de posición angular preciso.</li>
+                        <li><strong>Buzzer:</strong> Emitir avisos sonoros o alarmas.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <h2>Electrónica para Robótica Educativa</h2>
+        <p style="margin-top: 1rem;">Construye la base física de todos tus proyectos tecnológicos.</p>
+        <p>© Robótica Educativa - Todos los derechos reservados</p>
+    </footer>
+
+</body>
+</html>
