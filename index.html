@@ -1,518 +1,1176 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robótica Educativa</title>
+    <title>Robótica Educativa | Aprende, Crea y Transforma</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#0f172a',
+                        },
+                        cyanBrand: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite alternate',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.2)' },
+                            '100%': { boxShadow: '0 0 30px rgba(6, 182, 212, 0.6)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #0f172a;
-            --accent: #06b6d4;
-            --bg-light: #f8fafc;
-            --surface: #ffffff;
-            --text-main: #334155;
-            --text-dark: #0f172a;
-            --border: #e2e8f0;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            line-height: 1.6;
+            font-family: 'Outfit', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
         }
-
-        /* Navigation */
-        nav {
-            background-color: var(--secondary);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
+        .glass-card-light {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-        }
-
-        .nav-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
-            color: white;
-            padding: 5rem 2rem;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: #94a3b8;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s, transform 0.2s;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        section {
-            margin-bottom: 4rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            color: var(--text-dark);
-            margin-bottom: 1.5rem;
+        .gradient-border {
             position: relative;
-            padding-bottom: 0.5rem;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(56,189,248,0.3), rgba(129,140,248,0.1));
         }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background-color: var(--accent);
-            border-radius: 2px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        p {
-            margin-bottom: 1rem;
-            font-size: 1.05rem;
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
         }
-
-        /* Cards & Grid Layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
         }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: var(--surface);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Steps & Process Flow */
-        .flow-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            margin: 2rem 0;
-            font-weight: bold;
-        }
-
-        .flow-step {
-            background: #eff6ff;
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-        }
-
-        .flow-arrow {
-            color: var(--accent);
-        }
-
-        /* List Styling */
-        ul {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        ul li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        /* Course Modules Section */
-        .module-card {
-            border-top: 4px solid var(--primary);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .module-card h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .module-card a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 1rem;
-            display: inline-block;
-        }
-
-        .module-card a:hover {
-            text-decoration: underline;
-        }
-
-        /* Microcontroller Highlight Box */
-        .highlight-box {
-            background: linear-gradient(to right, #f0f9ff, #e0f2fe);
-            border-left: 5px solid var(--accent);
-            padding: 2rem;
-            border-radius: 0 12px 12px 0;
-            margin: 2rem 0;
-        }
-
-        /* FAQ Accordion-style layout */
-        .faq-item {
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
-        }
-
-        .faq-item h4 {
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary);
-            color: white;
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 4rem;
-        }
-
-        footer p {
-            color: #94a3b8;
-            margin-bottom: 0;
-        }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
         }
     </style>
 </head>
-<body>
+<body class="selection:bg-cyan-500 selection:text-slate-900 overflow-x-hidden">
 
-    <nav>
-        <div class="nav-container">
-            <div class="logo">Robótica Educativa</div>
-            <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="electronica.html">Electrónica</a></li>
-                <li><a href="#circuitos">Circuitos</a></li>
-                <li><a href="#programacion">Programación</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card transition-all duration-300 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30">
+                        <i class="fa-solid fa-microchip text-xl"></i>
+                    </div>
+                    <span class="text-xl font-extrabold tracking-tight text-white">ROBÓTICA <span class="text-cyan-400">EDU</span></span>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Inicio</a>
+                    <a href="#modulos" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Ruta de Aprendizaje</a>
+                    <a href="#simulador" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Simulador ESP32</a>
+                    <a href="#proyectos" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Proyectos</a>
+                    <a href="#habilidades" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Habilidades</a>
+                    <a href="#faq" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">FAQ</a>
+                </div>
+
+                <!-- Action Button -->
+                <div class="hidden md:block">
+                    <a href="#modulos" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg shadow-cyan-500/25 flex items-center gap-2">
+                        <i class="fa-solid fa-rocket text-sm"></i> Explora el Curso
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2 text-2xl focus:outline-none">
+                        <i class="fa-solid fa-bars" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-slate-800 px-4 pt-4 pb-6 space-y-3">
+            <a href="#inicio" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Inicio</a>
+            <a href="#modulos" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Ruta de Aprendizaje</a>
+            <a href="#simulador" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Simulador ESP32</a>
+            <a href="#proyectos" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Proyectos</a>
+            <a href="#habilidades" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Habilidades</a>
+            <a href="#faq" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">FAQ</a>
+            <a href="#modulos" class="block text-center mt-4 w-full py-3 rounded-xl bg-cyan-500 text-slate-950 font-bold">Explora el Curso</a>
         </div>
     </nav>
 
-    <header class="hero" id="inicio">
-        <h1>ROBÓTICA EDUCATIVA</h1>
-        <p>Aprende, crea y transforma ideas en proyectos reales</p>
-        <a href="#modulos" class="btn">Explora el Curso</a>
+    <!-- Hero Section -->
+    <header id="inicio" class="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-slate-950">
+        <!-- Background Glows -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Text Content -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-sm font-semibold tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                        Aprende Tecnología Interactiva
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+                        Transforma ideas en <br class="hidden sm:inline"/>
+                        <span class="gradient-text">Proyectos Robóticos Reales</span>
+                    </h1>
+                    
+                    <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Aprende, crea y domina la electrónica, el diseño de circuitos y la programación con microcontroladores ESP32 mediante metodologías prácticas y proyectos interactivos.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <a href="#modulos" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 font-black text-lg hover:from-cyan-300 hover:to-blue-500 transition-all shadow-xl shadow-cyan-500/20 text-center flex items-center justify-center gap-3">
+                            <span>Comenzar Ahora</span>
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#simulador" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card text-white font-semibold text-lg hover:bg-slate-800/80 hover:border-cyan-500/50 transition-all text-center flex items-center justify-center gap-3 border border-slate-700">
+                            <i class="fa-solid fa-laptop-code text-cyan-400"></i> Probar Simulador
+                        </a>
+                    </div>
+
+                    <!-- Key Metrics / Stats Badges -->
+                    <div class="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <span class="block text-2xl font-black text-white">100%</span>
+                            <span class="text-xs text-slate-400">Práctico</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-cyan-400">ESP32</span>
+                            <span class="text-xs text-slate-400">Tecnología IoT</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-indigo-400">8+</span>
+                            <span class="text-xs text-slate-400">Proyectos Guía</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right Image Showcase -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative mx-auto max-w-md lg:max-w-none">
+                        <!-- Main Hero Image Frame -->
+                        <div class="relative rounded-2xl overflow-hidden border border-cyan-500/30 shadow-2xl shadow-cyan-500/10 group">
+                            <img src="https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Estudiantes trabajando en Robótica" 
+                                 class="w-full h-[400px] object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/800x600/0f172a/06b6d4?text=Robotica+Educativa';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                            
+                            <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl glass-card border border-cyan-500/20">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-bolt"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-white font-bold text-sm">Robótica Basada en Proyectos</h4>
+                                        <p class="text-slate-400 text-xs">Aprende resolviendo desafíos reales</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badges -->
+                        <div class="absolute -top-6 -left-6 glass-card p-3 rounded-xl border border-slate-700 hidden sm:flex items-center gap-3 animate-float shadow-lg">
+                            <i class="fa-solid fa-microchip text-2xl text-cyan-400"></i>
+                            <div>
+                                <p class="text-xs font-bold text-white">ESP32 Ready</p>
+                                <p class="text-[10px] text-slate-400">WiFi & Bluetooth</p>
+                            </div>
+                        </div>
+
+                        <div class="absolute -bottom-6 -right-6 glass-card p-3 rounded-xl border border-slate-700 hidden sm:flex items-center gap-3 animate-float shadow-lg" style="animation-delay: 2s;">
+                            <i class="fa-solid fa-code text-2xl text-indigo-400"></i>
+                            <div>
+                                <p class="text-xs font-bold text-white">C++ / MicroPython</p>
+                                <p class="text-[10px] text-slate-400">Programación intuitiva</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </header>
 
-    <div class="container">
-        <section>
-            <h2>Aprender Robótica es Aprender Haciendo</h2>
-            <p>La Robótica Educativa es una forma práctica y divertida de aprender tecnología mediante la creación de robots, circuitos y sistemas programables.</p>
-            <p>En este curso aprenderemos a combinar conocimientos de electrónica, circuitos y programación para construir proyectos que puedan interactuar con el mundo que nos rodea.</p>
-            <p>La robótica no consiste solamente en construir robots. También nos enseña a observar un problema, pensar en una solución, diseñarla, construirla, probarla y mejorarla.</p>
-        </section>
-
-        <section class="grid-2">
-            <div class="card">
-                <h2>¿Qué es la Robótica Educativa?</h2>
-                <p>Utiliza robots, sensores, componentes electrónicos y herramientas de programación como recursos para desarrollar conocimientos y habilidades.</p>
-                <p>A través de proyectos prácticos, los estudiantes pueden comprender conceptos de tecnología, electrónica, programación, automatización y resolución de problemas.</p>
+    <!-- Section: Concept & Methodology -->
+    <section class="py-20 relative bg-slate-900/60 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Aprender Robótica es <span class="text-cyan-400">Aprender Haciendo</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+                <p class="text-slate-300 text-lg">
+                    La Robótica Educativa no consiste solamente en ensamblar piezas. Enseña a observar un problema, diseñar una solución, construirla, probarla y mejorarla continuamente.
+                </p>
             </div>
-            <div class="card" style="background-color: #f1f5f9;">
-                <h3>Ejemplo Práctico</h3>
-                <p><em>“Quiero que una luz se encienda cuando detecte movimiento”.</em></p>
-                <p><strong>Para conseguirlo aprenderemos:</strong></p>
-                <ul>
-                    <li>Cómo funciona la electricidad y qué es un circuito.</li>
-                    <li>Cómo conectar correctamente los componentes.</li>
-                    <li>Cómo utilizar un sensor y programar un microcontrolador.</li>
-                    <li>Cómo hacer pruebas y corregir errores.</li>
-                </ul>
-            </div>
-        </section>
 
-        <section>
-            <h2>¿Por qué aprender Robótica?</h2>
-            <p>La robótica permite aprender tecnología de una manera activa. En lugar de limitarse a leer cómo funciona un dispositivo, el estudiante puede construirlo, programarlo, probarlo y modificarlo.</p>
-            
-            <div class="grid-2" style="margin-top: 1.5rem;">
-                <div class="card">
-                    <h3>Preguntas que nos impulsan</h3>
-                    <p>Durante el proceso aparecen desafíos que obligan a buscar soluciones:</p>
-                    <ul>
-                        <li>¿Por qué el motor no gira?</li>
-                        <li>¿Por qué el sensor no detecta correctamente?</li>
-                        <li>¿Por qué el programa no funciona?</li>
-                        <li>¿Por qué el robot se mueve hacia el lado equivocado?</li>
-                    </ul>
-                    <p><strong>Cada problema se convierte en una oportunidad para aprender.</strong></p>
-                </div>
-                <div class="card">
-                    <h3>Integración de Conocimientos</h3>
-                    <p>En un mismo proyecto relacionamos múltiples áreas de manera transversal:</p>
-                    <ul>
-                        <li>Matemáticas y Física</li>
-                        <li>Informática y Programación</li>
-                        <li>Electrónica</li>
-                        <li>Creatividad y Diseño</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="highlight-box">
-            <h2>El corazón de nuestros proyectos: El microcontrolador</h2>
-            <p>En nuestros proyectos podemos utilizar un <strong>ESP32</strong>, un microcontrolador que permite conectar sensores, actuadores y otros componentes electrónicos, además de ofrecer capacidades de comunicación. El microcontrolador funciona como una especie de cerebro del proyecto.</p>
-            
-            <div class="flow-container">
-                <span class="flow-step">Sensor (ej. Movimiento)</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">ESP32</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Programa</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Actuador (ej. LED o Alarma)</span>
-            </div>
-        </section>
-
-        <section id="modulos">
-            <h2>Ruta de Aprendizaje</h2>
-            <p>El aprendizaje será progresivo. Nuestra ruta es: <strong>Electrónica ➔ Circuitos ➔ Programación ➔ Proyectos</strong></p>
-            
-            <div class="grid-3" style="margin-top: 2rem;">
-                <div class="card module-card" id="electronica">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- Card 1: Qué es -->
+                <div class="glass-card p-8 rounded-2xl hover:border-cyan-500/40 transition-all group flex flex-col justify-between">
                     <div>
-                        <h3>1. ELECTRÓNICA</h3>
-                        <p>Aprenderemos los fundamentos necesarios para comprender los componentes electrónicos y su funcionamiento físico.</p>
-                        <small>Voltaje, Corriente, Resistencia, Potencia, Señales digitales/analógicas, Sensores, Actuadores y Fuentes de alimentación.</small>
+                        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl mb-6 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">¿Qué es la Robótica Educativa?</h3>
+                        <p class="text-slate-300 leading-relaxed mb-6">
+                            Utiliza robots, sensores, componentes electrónicos y herramientas de programación como recursos interactivos para desarrollar conocimientos STEM (Ciencia, Tecnología, Ingeniería y Matemáticas).
+                        </p>
+                        <p class="text-slate-400 text-sm">
+                            A través de proyectos prácticos, los estudiantes comprenden desde la teoría eléctrica fundamental hasta la lógica computacional y la inteligencia aplicada a entornos físicos.
+                        </p>
                     </div>
-                    <a href="#">Ir a Electrónica →</a>
+                    <div class="mt-8 pt-6 border-t border-slate-800 flex items-center gap-4 text-cyan-400 text-sm font-semibold">
+                        <i class="fa-solid fa-circle-check"></i> Aprende a tu propio ritmo
+                    </div>
                 </div>
 
-                <div class="card module-card" id="circuitos">
+                <!-- Card 2: Ejemplo Práctico Highlight -->
+                <div class="glass-card p-8 rounded-2xl border-l-4 border-l-cyan-400 bg-gradient-to-br from-slate-900 to-slate-950 flex flex-col justify-between">
                     <div>
-                        <h3>2. CIRCUITOS</h3>
-                        <p>Aprenderemos a transformar los conocimientos de electrónica en conexiones reales y seguras.</p>
-                        <small>Circuitos básicos, Entradas/Salidas, Motores, Servomotores, LEDs, Pulsadores y Módulos electrónicos.</small>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Desafío Ejemplo</span>
+                            <i class="fa-solid fa-lightbulb text-amber-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">“Quiero que una luz se encienda cuando se detecte movimiento”</h3>
+                        <p class="text-slate-400 text-sm mb-6">Para lograr este objetivo práctico aprenderemos paso a paso:</p>
+
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-bolt"></i></span>
+                                <span><strong>Electricidad básica:</strong> Cómo fluye la corriente y qué conforma un circuito cerrado.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-plug"></i></span>
+                                <span><strong>Conexiones seguras:</strong> Pinouts, protoboards y resistencia de protección.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-code"></i></span>
+                                <span><strong>Programación:</strong> Lectura del sensor PIR y activación del pin de salida digital.</span>
+                            </li>
+                            <li class="flex items-start gap-3 text-slate-300">
+                                <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs shrink-0 mt-0.5"><i class="fa-solid fa-bug"></i></span>
+                                <span><strong>Depuración:</strong> Verificación de señales y corrección de errores en vivo.</span>
+                            </li>
+                        </ul>
                     </div>
-                    <a href="#">Ir a Circuitos →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Why Learn & Problem Solving -->
+    <section class="py-20 bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left Image & Illustration -->
+                <div class="relative">
+                    <div class="rounded-2xl overflow-hidden border border-slate-800 shadow-2xl relative">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" 
+                             alt="Laboratorio de Electrónica y Robótica" 
+                             class="w-full h-[450px] object-cover"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x600/0f172a/3b82f6?text=Laboratorio+Robotica';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                    </div>
+                    
+                    <!-- Floating Quote Box -->
+                    <div class="absolute -bottom-6 right-4 sm:right-8 glass-card p-6 rounded-2xl max-w-xs border border-cyan-500/30">
+                        <i class="fa-solid fa-quote-left text-cyan-400 text-2xl mb-2 block"></i>
+                        <p class="text-slate-200 text-sm font-medium italic">"Cada problema que surge en el circuito es una oportunidad para razonar y aprender."</p>
+                    </div>
                 </div>
 
-                <div class="card module-card" id="programacion">
+                <!-- Right Content -->
+                <div class="space-y-6">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+                        ¿Por qué aprender <span class="gradient-text">Robótica Hoy?</span>
+                    </h2>
+                    <p class="text-slate-300 leading-relaxed">
+                        La robótica sustituye el aprendizaje pasivo por una experiencia activa. En lugar de memorizar diagramas de un libro, creas prototipos reales, experimentas con variables y ves los resultados al instante.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <!-- Accordion/Card Problem Questions -->
+                        <div class="p-4 rounded-xl glass-card-light border border-slate-800 hover:border-slate-700 transition-all">
+                            <h4 class="font-bold text-cyan-300 text-base mb-1 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-question text-cyan-400"></i> Preguntas que nos impulsan al investigar:
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 text-xs text-slate-300">
+                                <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">¿Por qué el motor no gira?</div>
+                                <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">¿Por qué el sensor no lee datos?</div>
+                                <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">¿Por qué falla el bucle de código?</div>
+                                <div class="bg-slate-900/80 p-2.5 rounded-lg border border-slate-800">¿Cómo optimizar el consumo de batería?</div>
+                            </div>
+                        </div>
+
+                        <!-- STEM Cross Integration -->
+                        <div class="p-4 rounded-xl glass-card-light border border-slate-800">
+                            <h4 class="font-bold text-white text-base mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-indigo-400"></i> Integración Multidisciplinaria Transversal
+                            </h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold">Física y Electricidad</span>
+                                <span class="px-3 py-1 rounded-md bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold">Programación Lógica</span>
+                                <span class="px-3 py-1 rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs font-semibold">Matemáticas y Algoritmos</span>
+                                <span class="px-3 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">Diseño 3D y Estructuras</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: ESP32 Microcontroller Highlight Box -->
+    <section class="py-16 bg-gradient-to-b from-slate-950 to-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 border border-cyan-500/30 relative overflow-hidden shadow-2xl">
+                <!-- Background visual glow -->
+                <div class="absolute -right-20 -top-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase">
+                            <i class="fa-solid fa-microchip"></i> El Cerebro del Proyecto
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-black text-white">El Microcontrolador <span class="text-cyan-400">ESP32</span></h2>
+                        <p class="text-slate-300 leading-relaxed">
+                            El ESP32 es un potente microcontrolador con conectividad Wi-Fi y Bluetooth integrada, ideal para aprendizaje educativo, Internet de las Cosas (IoT) y sistemas domóticos avanzados. Actúa como el cerebro central procesando señales de entradas y controlando actuadores.
+                        </p>
+
+                        <!-- Flow Step Process Graphic -->
+                        <div class="pt-4">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Flujo de Procesamiento en Tiempo Real</h4>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                                <div class="p-3 rounded-xl bg-slate-900 border border-slate-700">
+                                    <div class="text-cyan-400 text-xl mb-1"><i class="fa-solid fa-eye"></i></div>
+                                    <span class="block text-xs font-bold text-white">1. Sensor</span>
+                                    <span class="text-[10px] text-slate-400">Detecta cambio</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-cyan-950/80 border border-cyan-500/40">
+                                    <div class="text-cyan-300 text-xl mb-1"><i class="fa-solid fa-microchip"></i></div>
+                                    <span class="block text-xs font-bold text-cyan-200">2. ESP32</span>
+                                    <span class="text-[10px] text-cyan-400">Procesa datos</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900 border border-slate-700">
+                                    <div class="text-indigo-400 text-xl mb-1"><i class="fa-solid fa-code"></i></div>
+                                    <span class="block text-xs font-bold text-white">3. Programa</span>
+                                    <span class="text-[10px] text-slate-400">Aplica lógica</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-900 border border-slate-700">
+                                    <div class="text-emerald-400 text-xl mb-1"><i class="fa-solid fa-lightbulb"></i></div>
+                                    <span class="block text-xs font-bold text-white">4. Actuador</span>
+                                    <span class="text-[10px] text-slate-400">Ejecuta acción</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Pinout Vector Diagram / Mock -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-full max-w-sm p-6 rounded-2xl bg-slate-950 border border-cyan-500/40 shadow-inner">
+                            <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                                <span class="text-xs font-mono text-cyan-400">ESP32 WROOM-32</span>
+                                <span class="flex h-2 w-2 relative">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                            </div>
+                            <!-- ESP32 Graphic Simulation -->
+                            <div class="bg-slate-900 rounded-xl p-4 border border-slate-800 text-center relative overflow-hidden">
+                                <div class="w-24 h-32 mx-auto bg-slate-800 rounded border border-slate-600 flex flex-col items-center justify-between p-2 shadow-lg">
+                                    <div class="w-16 h-8 bg-zinc-700 rounded text-[9px] text-zinc-300 flex items-center justify-center font-mono">ESP-WROOM-32</div>
+                                    <div class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center text-[10px] text-cyan-300">
+                                        <i class="fa-solid fa-wifi"></i>
+                                    </div>
+                                    <div class="text-[8px] text-slate-400 font-mono">GPIO & POWER</div>
+                                </div>
+                                <div class="mt-4 grid grid-cols-2 gap-2 text-[11px] font-mono text-slate-300">
+                                    <div class="bg-slate-950 p-1.5 rounded text-left border border-slate-800"><span class="text-amber-400">VIN:</span> 3.3V / 5V</div>
+                                    <div class="bg-slate-950 p-1.5 rounded text-right border border-slate-800"><span class="text-cyan-400">GND:</span> Tierra</div>
+                                    <div class="bg-slate-950 p-1.5 rounded text-left border border-slate-800"><span class="text-emerald-400">GPIO2:</span> LED Builtin</div>
+                                    <div class="bg-slate-950 p-1.5 rounded text-right border border-slate-800"><span class="text-purple-400">ADC:</span> Sensores</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Course Learning Path Modules -->
+    <section id="modulos" class="py-20 bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold uppercase">
+                    Paso a Paso
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Ruta Progresiva de <span class="text-cyan-400">Aprendizaje</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+                <p class="text-slate-400">
+                    Avanzarás desde los conceptos físicos básicos hasta la programación de sistemas autónomos e interactivos.
+                </p>
+            </div>
+
+            <!-- Modules Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Module 1 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col justify-between group">
                     <div>
-                        <h3>3. PROGRAMACIÓN</h3>
-                        <p>Aprenderemos a dar instrucciones a nuestros proyectos para que tomen decisiones automáticamente.</p>
-                        <small>Lectura de sensores, Control de motores, Secuencias, Lógica de control y Automatización de procesos.</small>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Electrónica básica" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/0f172a/06b6d4?text=1.+Electronica';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-cyan-500 text-slate-950 font-black text-xs uppercase">Módulo 1</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">1. ELECTRÓNICA</h3>
+                            <p class="text-slate-300 text-sm mb-4">
+                                Fundamentos para comprender componentes electrónicos y el comportamiento físico de la corriente.
+                            </p>
+                            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+                                <p><strong class="text-slate-200">Temas claves:</strong></p>
+                                <p>• Voltaje, Corriente, Resistencia y Ley de Ohm</p>
+                                <p>• Señales analógicas vs. digitales</p>
+                                <p>• Sensores, actuadores y fuentes de energía</p>
+                            </div>
+                        </div>
                     </div>
-                    <a href="#">Ir a Programación →</a>
+                    <div class="px-6 pb-6">
+                        <button onclick="showModuleDetails('Electrónica')" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-sm font-bold transition-all flex items-center justify-center gap-2">
+                            <span>Ver Temario Completo</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <section>
-            <h2>¿Qué podemos crear?</h2>
-            <p>Convertimos ideas en prototipos funcionales:</p>
-            <div class="grid-3">
-                <div class="card">
-                    <h4>🚦 Semáforos inteligentes</h4>
-                    <p>Control de luces mediante tiempos programados.</p>
+                <!-- Module 2 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Circuitos electrónicos" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/0f172a/818cf8?text=2.+Circuitos';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-indigo-500 text-white font-black text-xs uppercase">Módulo 2</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">2. CIRCUITOS</h3>
+                            <p class="text-slate-300 text-sm mb-4">
+                                Transforma conceptos teóricos en esquemas y prototipos reales sobre protoboards y placas.
+                            </p>
+                            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+                                <p><strong class="text-slate-200">Temas claves:</strong></p>
+                                <p>• Armado en Protoboard y soldadura</p>
+                                <p>• Motores DC, Servomotores y Relés</p>
+                                <p>• Conexión de LEDs, pulsadores y pantallas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6">
+                        <button onclick="showModuleDetails('Circuitos')" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-indigo-500 hover:text-white text-indigo-400 text-sm font-bold transition-all flex items-center justify-center gap-2">
+                            <span>Ver Temario Completo</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="card">
-                    <h4>🚪 Puertas automáticas</h4>
-                    <p>Apertura mediante sensores y servomotores.</p>
-                </div>
-                <div class="card">
-                    <h4>💡 Iluminación automática</h4>
-                    <p>Luces activadas por movimiento o nivel de luz.</p>
-                </div>
-                <div class="card">
-                    <h4>🚨 Alarmas de seguridad</h4>
-                    <p>Sistemas de detección y alerta automatizados.</p>
-                </div>
-                <div class="card">
-                    <h4>🏎️ Vehículos y Seguidores de línea</h4>
-                    <p>Robots capaces de desplazarse y seguir rutas.</p>
-                </div>
-                <div class="card">
-                    <h4>🌱 Riego automático</h4>
-                    <p>Control de agua mediante sensores de humedad del suelo.</p>
-                </div>
-                <div class="card">
-                    <h4>📊 Estaciones de monitoreo</h4>
-                    <p>Medición de temperatura, humedad y distancia.</p>
-                </div>
-                <div class="card">
-                    <h4>🏠 Sistemas domóticos e IoT</h4>
-                    <p>Automatización del hogar y proyectos conectados a Internet.</p>
-                </div>
-            </div>
-        </section>
 
-        <section class="grid-2">
-            <div>
-                <h2>Habilidades que desarrollaremos</h2>
-                <ul>
-                    <li><strong>Resolución de problemas:</strong> Análisis y soluciones paso a paso.</li>
-                    <li><strong>Pensamiento lógico y crítico:</strong> Estructura de causa-efecto y análisis de errores.</li>
-                    <li><strong>Creatividad:</strong> Diseño de proyectos propios desde cero.</li>
-                    <li><strong>Trabajo por proyectos:</strong> Prototipado en etapas reales.</li>
-                    <li><strong>Experimentación y Perseverancia:</strong> Aprender del error y corregir.</li>
-                    <li><strong>Trabajo en equipo:</strong> Colaboración y distribución de tareas.</li>
-                </ul>
-            </div>
-            <div>
-                <h2>De una idea a un proyecto</h2>
-                <div class="flow-container" style="flex-direction: column; align-items: stretch;">
-                    <div class="flow-step">1. Identificar un problema</div>
-                    <div class="flow-step">2. Pensar una solución & Diseñar</div>
-                    <div class="flow-step">3. Construir & Programar</div>
-                    <div class="flow-step">4. Probar, Corregir y Mejorar</div>
+                <!-- Module 3 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=600&q=80" 
+                                 alt="Programación de robots" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/0f172a/38bdf8?text=3.+Programacion';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-cyan-400 text-slate-950 font-black text-xs uppercase">Módulo 3</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">3. PROGRAMACIÓN</h3>
+                            <p class="text-slate-300 text-sm mb-4">
+                                Dale instrucciones a tu hardware para que tome decisiones inteligentes en tiempo real.
+                            </p>
+                            <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
+                                <p><strong class="text-slate-200">Temas claves:</strong></p>
+                                <p>• Sintaxis C++ / Arduino IDE / MicroPython</p>
+                                <p>• Estructuras condicionales y bucles</p>
+                                <p>• Comunicación Serie, WiFi e IoT</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6">
+                        <button onclick="showModuleDetails('Programación')" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-cyan-400 hover:text-slate-950 text-cyan-400 text-sm font-bold transition-all flex items-center justify-center gap-2">
+                            <span>Ver Temario Completo</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </section>
 
-        <section id="faq">
-            <h2>Preguntas Frecuentes</h2>
-            
-            <div class="faq-item">
-                <h4>¿Necesito saber programación o electrónica antes de comenzar?</h4>
-                <p>No. El contenido está organizado progresivamente para aprender todos los conceptos fundamentales desde cero durante el curso.</p>
             </div>
-            
-            <div class="faq-item">
-                <h4>¿Solamente construiremos robots?</h4>
-                <p>No. Trabajaremos también con sistemas automáticos, sensores, actuadores, domótica y proyectos tecnológicos diversos.</p>
-            </div>
+        </div>
+    </section>
 
-            <div class="faq-item">
-                <h4>¿Qué microcontrolador utilizaremos?</h4>
-                <p>Trabajaremos principalmente con el ESP32 debido a sus grandes capacidades y posibilidades para proyectos educativos conectados.</p>
+    <!-- Section: Interactive ESP32 Simulator -->
+    <section id="simulador" class="py-20 bg-slate-950 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Demostración Interactiva</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Simulador en Vivo <span class="text-cyan-400">ESP32</span></h2>
+                <p class="text-slate-400">Haz clic en los controles para simular entradas de sensores y observa la respuesta del microcontrolador y el código resultante.</p>
             </div>
 
-            <div class="faq-item">
-                <h4>¿Podré crear mis propios proyectos?</h4>
-                <p>¡Ese es el objetivo principal! A medida que mejores, podrás combinar conocimientos para diseñar tus propias soluciones.</p>
-            </div>
-        </section>
-    </div>
+            <!-- Interactive Simulator UI Box -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 grid grid-cols-1 lg:grid-cols-12 gap-8 shadow-2xl">
+                
+                <!-- Left Control Panel -->
+                <div class="lg:col-span-5 space-y-6">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i> Entrada de Sensores
+                    </h3>
 
-    <footer>
-        <h2>Comienza tu aventura en la Robótica Educativa</h2>
-        <p style="margin: 1rem 0 2rem 0; color: #cbd5e1;">Descubre, construye, programa y convierte tus ideas en realidad.</p>
-        <p>© Robótica Educativa - Convierte tus ideas en soluciones tecnológicas</p>
+                    <!-- Sensor 1: PIR Motion -->
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-white">1. Sensor PIR (Movimiento)</span>
+                            <span id="motion-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400">SIN MOVIMIENTO</span>
+                        </div>
+                        <button id="btn-toggle-motion" class="w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-slate-700">
+                            <i class="fa-solid fa-person-walking"></i> Simular Presencia Humana
+                        </button>
+                    </div>
+
+                    <!-- Sensor 2: Light LDR Slider -->
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-semibold text-white">2. Sensor LDR (Luz Ambiental)</span>
+                            <span id="light-val-badge" class="text-xs font-mono text-cyan-400">500 Lux</span>
+                        </div>
+                        <input type="range" id="slider-light" min="0" max="1023" value="500" class="w-full accent-cyan-400 cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                            <span>Oscuridad (0)</span>
+                            <span>Luz Alta (1023)</span>
+                        </div>
+                    </div>
+
+                    <!-- Output Virtual Board Status -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-cyan-500/30 space-y-3">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Estado de Actuadores Salida</span>
+                        <div class="grid grid-cols-2 gap-3 text-center">
+                            <div id="led-indicator" class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 transition-all">
+                                <i class="fa-solid fa-lightbulb text-2xl mb-1 block"></i>
+                                <span class="text-xs font-bold">LED LUZ</span>
+                                <span id="led-state-text" class="block text-[10px] uppercase font-mono">APAGADO</span>
+                            </div>
+                            <div id="buzzer-indicator" class="p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 transition-all">
+                                <i class="fa-solid fa-volume-high text-2xl mb-1 block"></i>
+                                <span class="text-xs font-bold">ALARMA</span>
+                                <span id="buzzer-state-text" class="block text-[10px] uppercase font-mono">SILENCIO</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Code & Output Visualizer -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono text-cyan-400 flex items-center gap-2">
+                            <i class="fa-solid fa-terminal"></i> Arduino IDE / C++ Code View
+                        </span>
+                        <span class="text-[10px] text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30">
+                            Ejecutando a 240MHz
+                        </span>
+                    </div>
+
+                    <!-- Code Snippet Box -->
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs overflow-x-auto text-slate-300 leading-relaxed shadow-inner">
+<pre><code id="code-display"><span class="text-purple-400">void</span> <span class="text-blue-400">loop</span>() {
+  <span class="text-purple-400">int</span> pirState = <span class="text-cyan-400">digitalRead</span>(PIR_PIN);
+  <span class="text-purple-400">int</span> lightLevel = <span class="text-cyan-400">analogRead</span>(LDR_PIN);
+
+  <span class="text-slate-500">// Lógica condicional de automatización</span>
+  <span class="text-purple-400">if</span> (pirState == <span class="text-amber-400">HIGH</span> &amp;&amp; lightLevel &lt; <span class="text-amber-400">300</span>) {
+    <span class="text-cyan-400">digitalWrite</span>(LED_PIN, <span class="text-amber-400">HIGH</span>);  <span class="text-emerald-400">// Encender luz nocturna</span>
+    <span class="text-cyan-400">digitalWrite</span>(BUZZER_PIN, <span class="text-amber-400">HIGH</span>);<span class="text-emerald-400">// Alarma de intruso</span>
+  } <span class="text-purple-400">else</span> {
+    <span class="text-cyan-400">digitalWrite</span>(LED_PIN, <span class="text-amber-400">LOW</span>);
+    <span class="text-cyan-400">digitalWrite</span>(BUZZER_PIN, <span class="text-amber-400">LOW</span>);
+  }
+}</code></pre>
+                    </div>
+
+                    <!-- Real-time Console Monitor -->
+                    <div class="bg-slate-900 rounded-xl p-3 border border-slate-800">
+                        <span class="text-[10px] font-mono text-slate-400 block mb-1">MONITOR SERIE (115200 Baud):</span>
+                        <div id="serial-output" class="font-mono text-xs text-emerald-400 h-20 overflow-y-auto space-y-1">
+                            <div>> Sistema iniciado. Esperando eventos de sensores...</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: What We Can Create (Projects Showcase) -->
+    <section id="proyectos" class="py-20 bg-slate-900/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase">Prototipos Funcionales</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">¿Qué Proyectos Puedes <span class="gradient-text">Construir?</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+                <p class="text-slate-300">
+                    Aplica tus habilidades en la construcción de inventos útiles y proyectos robóticos inteligentes.
+                </p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Project 1 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=500&q=80" 
+                             alt="Semáforos inteligentes" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/06b6d4?text=Semaforo+Inteligente';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-cyan-300 font-mono text-[10px]">Control Tiempos</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">🚦 Semáforos Inteligentes</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Control automático de secuencia vehicular mediante tiempos programados e interrupciones.</p>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1558002038-1055907df8d7?auto=format&fit=crop&w=500&q=80" 
+                             alt="Puertas automáticas" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/818cf8?text=Puertas+Automaticas';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-indigo-300 font-mono text-[10px]">Servomotores</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">🚪 Puertas Automáticas</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Apertura y cierre asistido utilizando sensores ultrasónicos y control servomotor.</p>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80" 
+                             alt="Iluminación inteligente" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/06b6d4?text=Iluminacion+Auto';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-cyan-300 font-mono text-[10px]">Domótica</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">💡 Iluminación Automática</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Encendido inteligente según niveles de intensidad lumínica (LDR) o movimiento PIR.</p>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" 
+                             alt="Alarmas de seguridad" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/3b82f6?text=Alarmas+Seguridad';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-blue-300 font-mono text-[10px]">Seguridad</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">🚨 Alarmas de Seguridad</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Detección de intrusos con alertas sonoras, visuales y notificaciones inalámbricas.</p>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=500&q=80" 
+                             alt="Vehículos seguidores de línea" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/06b6d4?text=Robot+Movil';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-cyan-300 font-mono text-[10px]">Robótica Móvil</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">🏎️ Seguidor de Línea</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Robots móviles autónomos capaces de navegar por circuitos usando sensores infrarrojos.</p>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=500&q=80" 
+                             alt="Riego automático" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/10b981?text=Riego+Automata';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-emerald-300 font-mono text-[10px]">Agritech</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">🌱 Riego Automático</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Medición de humedad del suelo con activación de electroválvulas y minibombas.</p>
+                    </div>
+                </div>
+
+                <!-- Project 7 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=500&q=80" 
+                             alt="Estaciones meteorológicas" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/06b6d4?text=Estacion+Clima';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-cyan-300 font-mono text-[10px]">Monitoreo</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">📊 Estaciones de Medición</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Lectura de temperatura, humedad (DHT11/22) y despliegue en pantallas OLED.</p>
+                    </div>
+                </div>
+
+                <!-- Project 8 -->
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 group">
+                    <div class="h-40 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&w=500&q=80" 
+                             alt="IoT Domótica" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x300/0f172a/a855f7?text=IoT+Domotica';">
+                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-slate-950/80 text-purple-300 font-mono text-[10px]">IoT / Web</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="text-lg font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">🏠 Sistemas Domóticos IoT</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">Control remoto de dispositivos desde tu smartphone usando servidor web en ESP32.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Skills & Workflow Step-by-Step -->
+    <section id="habilidades" class="py-20 bg-slate-950 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Left: Skills List -->
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase">
+                        Habilidades Futuras
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Competencias que <span class="gradient-text">Desarrollarás</span></h2>
+                    <p class="text-slate-400">
+                        Más allá de la teoría técnica, la robótica potencia aptitudes esenciales para resolver desafíos del mundo real:
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-xl glass-card border border-slate-800 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-puzzle-piece"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Resolución de Problemas</h4>
+                                <p class="text-slate-400 text-xs mt-1">Análisis estructurado y desglose de fallos complejos.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl glass-card border border-slate-800 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Pensamiento Lógico</h4>
+                                <p class="text-slate-400 text-xs mt-1">Estructura causa-efecto y condicionales algorítmicas.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl glass-card border border-slate-800 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Creatividad e Innovación</h4>
+                                <p class="text-slate-400 text-xs mt-1">Diseño libre de tus propios inventos tecnológicos.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl glass-card border border-slate-800 flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Perseverancia</h4>
+                                <p class="text-slate-400 text-xs mt-1">Superación del error mediante experimentación activa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Step-by-Step Methodology Flow -->
+                <div class="glass-card rounded-3xl p-8 border border-slate-800 space-y-6">
+                    <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-diagram-project text-cyan-400"></i> Metodología de Proyecto
+                    </h3>
+                    <p class="text-slate-400 text-sm">Así transformamos una idea abstracta en un dispositivo robótico totalmente funcional:</p>
+
+                    <div class="space-y-4 relative before:absolute before:inset-0 before:left-6 before:w-0.5 before:bg-slate-800">
+                        
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500 text-slate-950 font-black flex items-center justify-center shadow-lg shadow-cyan-500/20 shrink-0">1</div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 w-full">
+                                <h5 class="text-white font-bold text-sm">Identificar una Necesidad o Problema</h5>
+                                <p class="text-slate-400 text-xs">Observar el entorno y definir el objetivo del sistema.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500 text-white font-black flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">2</div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 w-full">
+                                <h5 class="text-white font-bold text-sm">Diseñar el Diagrama & Conexiones</h5>
+                                <p class="text-slate-400 text-xs">Seleccionar sensores, actuadores y esquema de alimentación.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500 text-white font-black flex items-center justify-center shadow-lg shadow-purple-500/20 shrink-0">3</div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 w-full">
+                                <h5 class="text-white font-bold text-sm">Construir Circuito & Programar</h5>
+                                <p class="text-slate-400 text-xs">Ensamblar protoboard y escribir el código en C++/MicroPython.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 relative z-10">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500 text-slate-950 font-black flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">4</div>
+                            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 w-full">
+                                <h5 class="text-white font-bold text-sm">Probar, Depurar y Optimizar</h5>
+                                <p class="text-slate-400 text-xs">Validar lecturas de sensores y corregir posibles fallas.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: FAQ Accordion -->
+    <section id="faq" class="py-20 bg-slate-900/40">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase">Dudas Frecuentes</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Preguntas <span class="text-cyan-400">Frecuentes</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Accordions Container -->
+            <div class="space-y-4">
+                
+                <!-- FAQ Item 1 -->
+                <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white text-base sm:text-lg flex items-center gap-3">
+                            <i class="fa-solid fa-circle-question text-cyan-400"></i> ¿Necesito conocimientos previos de programación o electrónica?
+                        </span>
+                        <i id="faq-icon-1" class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-1" class="hidden px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        No. El curso está diseñado pedagógicamente desde cero. Comenzaremos comprendiendo la naturaleza de la electricidad básica antes de escribir la primera línea de código.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white text-base sm:text-lg flex items-center gap-3">
+                            <i class="fa-solid fa-robot text-indigo-400"></i> ¿Solamente aprenderemos a construir robots sobre ruedas?
+                        </span>
+                        <i id="faq-icon-2" class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-2" class="hidden px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        ¡En absoluto! Construiremos sistemas automáticos de control, estaciones de monitoreo climático, cerraduras inteligentes, sistemas domóticos IoT para hogares y alarmas de seguridad.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+                    <button onclick="toggleFaq(3)" class="w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white text-base sm:text-lg flex items-center gap-3">
+                            <i class="fa-solid fa-microchip text-cyan-400"></i> ¿Por qué utilizamos principalmente el microcontrolador ESP32?
+                        </span>
+                        <i id="faq-icon-3" class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-3" class="hidden px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        El ESP32 ofrece un rendimiento superior a 240MHz, múltiples pines GPIO, conversores analógico-digitales de precisión y conectividad WiFi/Bluetooth nativa por un costo sumamente accesible, permitiendo proyectos de escala profesional.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+                    <button onclick="toggleFaq(4)" class="w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-white text-base sm:text-lg flex items-center gap-3">
+                            <i class="fa-solid fa-lightbulb text-amber-400"></i> ¿Puedo diseñar mis propios proyectos personales al finalizar?
+                        </span>
+                        <i id="faq-icon-4" class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-content-4" class="hidden px-6 pb-6 text-slate-300 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        ¡Es el gran objetivo del curso! Te brindaremos las bases lógicas y esquemáticas necesarias para que puedas combinar componentes libremente e inventar tus propias soluciones tecnológicas.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA & Information -->
+    <footer class="bg-slate-950 border-t border-slate-800 relative pt-20 pb-12 overflow-hidden">
+        <!-- Background Glow -->
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
+            <div class="max-w-3xl mx-auto space-y-4">
+                <h2 class="text-3xl sm:text-5xl font-black text-white">Comienza tu Aventura en la <span class="gradient-text">Robótica Educativa</span></h2>
+                <p class="text-slate-400 text-lg">Descubre, construye, programa y convierte tus ideas en soluciones tecnológicas reales.</p>
+                <div class="pt-4 flex justify-center">
+                    <a href="#modulos" class="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 font-black text-lg hover:from-cyan-300 hover:to-blue-500 transition-all shadow-xl shadow-cyan-500/25 flex items-center gap-3">
+                        <i class="fa-solid fa-play text-sm"></i> Explora los Módulos
+                    </a>
+                </div>
+            </div>
+
+            <div class="pt-12 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+                <div class="flex items-center gap-2 text-slate-400">
+                    <i class="fa-solid fa-microchip text-cyan-400 text-lg"></i>
+                    <span class="font-bold text-white">Robótica Educativa</span> — Convierte ideas en realidad.
+                </div>
+                <p>© 2026 Robótica Educativa. Todos los derechos reservados.</p>
+            </div>
+        </div>
     </footer>
 
+    <!-- Modal detail viewer -->
+    <div id="module-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-card max-w-lg w-full rounded-2xl p-6 border border-cyan-500/40 relative space-y-4">
+            <button onclick="closeModuleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
+            <div id="modal-body" class="text-sm text-slate-300 space-y-3"></div>
+            <button onclick="closeModuleModal()" class="w-full py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-sm">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Interactivity -->
+    <script>
+        let state = {
+            motion: false,
+            light: 500
+        };
+
+        // DOM Elements
+        const btnToggleMotion = document.getElementById('btn-toggle-motion');
+        const motionBadge = document.getElementById('motion-status-badge');
+        const sliderLight = document.getElementById('slider-light');
+        const lightBadge = document.getElementById('light-val-badge');
+        const ledIndicator = document.getElementById('led-indicator');
+        const ledStateText = document.getElementById('led-state-text');
+        const buzzerIndicator = document.getElementById('buzzer-indicator');
+        const buzzerStateText = document.getElementById('buzzer-state-text');
+        const serialOutput = document.getElementById('serial-output');
+
+        // Toggle Motion Sensor Simulation
+        btnToggleMotion.addEventListener('click', () => {
+            state.motion = !state.motion;
+            if(state.motion) {
+                motionBadge.textContent = 'MOVIMIENTO DETECTADO';
+                motionBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+                btnToggleMotion.className = 'w-full py-2 px-4 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-amber-500/40';
+                logSerial('Sensor PIR: Presencia detectada (HIGH)');
+            } else {
+                motionBadge.textContent = 'SIN MOVIMIENTO';
+                motionBadge.className = 'px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400';
+                btnToggleMotion.className = 'w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-bold transition-all flex items-center justify-center gap-2 border border-slate-700';
+                logSerial('Sensor PIR: Sin movimiento (LOW)');
+            }
+            updateSimulator();
+        });
+
+        // Light Slider Simulation
+        sliderLight.addEventListener('input', (e) => {
+            state.light = parseInt(e.target.value);
+            lightBadge.textContent = `${state.light} Lux`;
+            logSerial(`Sensor LDR Lectura ADC: ${state.light}`);
+            updateSimulator();
+        });
+
+        // Logic Update for Live ESP32 Simulation
+        function updateSimulator() {
+            // Condition: Motion detected AND Lux < 300 triggers actuators
+            if (state.motion && state.light < 300) {
+                // Actuators ON
+                ledIndicator.className = 'p-3 rounded-lg bg-amber-500/20 border border-amber-500/50 text-amber-300 shadow-lg shadow-amber-500/20 transition-all animate-pulse';
+                ledStateText.textContent = 'ENCENDIDO (HIGH)';
+                
+                buzzerIndicator.className = 'p-3 rounded-lg bg-rose-500/20 border border-rose-500/50 text-rose-300 shadow-lg shadow-rose-500/20 transition-all animate-bounce';
+                buzzerStateText.textContent = 'ACTIVADO (HIGH)';
+                
+                logSerial('--> ALERTA ESP32: Luz activada & Alarma activada!');
+            } else {
+                // Actuators OFF
+                ledIndicator.className = 'p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 transition-all';
+                ledStateText.textContent = 'APAGADO (LOW)';
+                
+                buzzerIndicator.className = 'p-3 rounded-lg bg-slate-900 border border-slate-800 text-slate-500 transition-all';
+                buzzerStateText.textContent = 'SILENCIO (LOW)';
+            }
+        }
+
+        // Helper: Output log to virtual serial monitor
+        function logSerial(msg) {
+            const time = new Date().toLocaleTimeString();
+            const div = document.createElement('div');
+            div.textContent = `[${time}] ${msg}`;
+            serialOutput.appendChild(div);
+            serialOutput.scrollTop = serialOutput.scrollHeight;
+        }
+
+        // Accordion FAQs toggle logic
+        function toggleFaq(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // Mobile drawer toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.className = 'fa-solid fa-bars';
+            } else {
+                menuIcon.className = 'fa-solid fa-xmark';
+            }
+        });
+
+        // Module details modal launcher
+        function showModuleDetails(title) {
+            const modal = document.getElementById('module-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            modalTitle.textContent = `Detalles del Módulo: ${title}`;
+
+            if(title === 'Electrónica') {
+                modalBody.innerHTML = `
+                    <p><strong>Contenido detallado:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-300">
+                        <li>Principios del voltaje, intensidad y resistencia eléctrica.</li>
+                        <li>Cálculo práctico con la Ley de Ohm.</li>
+                        <li>Tipos de sensores: de temperatura, movimiento, presencia e intensidad de luz.</li>
+                        <li>Componentes pasivos vs activos (resistencias, capacitores, diodos, transistores).</li>
+                    </ul>
+                `;
+            } else if(title === 'Circuitos') {
+                modalBody.innerHTML = `
+                    <p><strong>Contenido detallado:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-300">
+                        <li>Uso correcto de la protoboard y distribución de alimentación.</li>
+                        <li>Aislamiento y control de potencia con Relés y Transistores.</li>
+                        <li>Manejadores de motores H-Bridge para carros robóticos.</li>
+                        <li>Conexión segura de microcontroladores y prevención de cortocircuitos.</li>
+                    </ul>
+                `;
+            } else {
+                modalBody.innerHTML = `
+                    <p><strong>Contenido detallado:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1 text-slate-300">
+                        <li>Entorno Arduino IDE y estructura de programas (setup y loop).</li>
+                        <li>Lectura de entradas analógicas (ADC) y digitales.</li>
+                        <li>Salidas PWM para control gradual de motores y luces.</li>
+                        <li>Creación de un servidor web sencillo con ESP32 para domótica IoT.</li>
+                    </ul>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModuleModal() {
+            document.getElementById('module-modal').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
