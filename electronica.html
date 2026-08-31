@@ -1,709 +1,1185 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electrónica para Robótica Educativa</title>
+    <title>Electrónica para Robótica | Módulo 1 Interactivo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#0f172a',
+                        },
+                        cyanBrand: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite alternate',
+                        'float': 'float 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.2)' },
+                            '100%': { boxShadow: '0 0 30px rgba(6, 182, 212, 0.6)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --secondary: #0f172a;
-            --accent: #06b6d4;
-            --bg-light: #f8fafc;
-            --surface: #ffffff;
-            --text-main: #334155;
-            --text-dark: #0f172a;
-            --border: #e2e8f0;
-            --warning: #ef4444;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            background-color: var(--secondary);
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-        }
-
-        .nav-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
-            color: white;
-            padding: 4rem 2rem;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: white;
-        }
-
-        .hero p {
-            font-size: 1.15rem;
-            color: #94a3b8;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        section {
-            margin-bottom: 3.5rem;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            color: var(--text-dark);
-            margin-bottom: 1.2rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 4px;
-            background-color: var(--accent);
-            border-radius: 2px;
-        }
-
-        h3 {
-            font-size: 1.3rem;
-            color: var(--primary);
-            margin: 1.5rem 0 0.8rem 0;
-        }
-
-        p {
-            margin-bottom: 1rem;
-            font-size: 1.05rem;
-        }
-
-        /* Grid Layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: var(--surface);
-            padding: 1.8rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Flow and Steps */
-        .flow-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center;
-            justify-content: center;
-            background: var(--surface);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            margin: 1.5rem 0;
-            font-weight: bold;
-        }
-
-        .flow-step {
-            background: #eff6ff;
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-        }
-
-        .flow-arrow {
-            color: var(--accent);
-        }
-
-        /* Lists */
-        ul {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        ul li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        /* Tables */
-        .table-responsive {
-            overflow-x: auto;
-            margin: 1.5rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--surface);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        th, td {
-            padding: 0.8rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background-color: var(--secondary);
-            color: white;
-        }
-
-        /* Highlight Boxes */
-        .highlight-box {
-            background: linear-gradient(to right, #f0f9ff, #e0f2fe);
-            border-left: 5px solid var(--accent);
-            padding: 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 1.5rem 0;
-        }
-
-        .warning-box {
-            background: #fef2f2;
-            border-left: 5px solid var(--warning);
-            padding: 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 1.5rem 0;
-        }
-
-        .code-block {
-            background-color: var(--secondary);
+            font-family: 'Outfit', sans-serif;
+            background-color: #0b0f19;
             color: #f1f5f9;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            font-family: monospace;
-            margin: 1rem 0;
-            white-space: pre-wrap;
         }
-
-        /* Footer */
-        footer {
-            background-color: var(--secondary);
-            color: white;
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 4rem;
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        footer p {
-            color: #94a3b8;
-            margin-bottom: 0;
+        .glass-card-light {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .hero h1 {
-                font-size: 2rem;
-            }
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
         }
     </style>
 </head>
-<body>
+<body class="selection:bg-cyan-500 selection:text-slate-900 overflow-x-hidden">
 
-    <!-- MENÚ PRINCIPAL -->
-    <nav>
-        <div class="nav-container">
-            <a href="index.html" class="logo">Robótica Educativa</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="electronica.html">Electrónica</a></li>
-                <li><a href="index.html#circuitos">Circuitos</a></li>
-                <li><a href="index.html#programacion">Programación</a></li>
-                <li><a href="index.html#faq">FAQ</a></li>
-            </ul>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card transition-all duration-300 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/30">
+                            <i class="fa-solid fa-bolt text-xl"></i>
+                        </div>
+                        <span class="text-xl font-extrabold tracking-tight text-white">ELECTRÓNICA <span class="text-cyan-400">EDU</span></span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden md:flex items-center space-x-6 text-sm">
+                    <a href="#fundamentos" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Fundamentos</a>
+                    <a href="#ley-ohm" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Calculadora Ley de Ohm</a>
+                    <a href="#componentes" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Componentes</a>
+                    <a href="#senales" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Señales</a>
+                    <a href="#seguridad" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Seguridad</a>
+                    <a href="#quiz" class="text-slate-300 hover:text-cyan-400 font-medium transition-colors">Quiz</a>
+                </div>
+
+                <!-- Navigation Button -->
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="index.html" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition-all border border-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left text-xs"></i> Inicio Curso
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2 text-2xl focus:outline-none">
+                        <i class="fa-solid fa-bars" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card border-t border-slate-800 px-4 pt-4 pb-6 space-y-3">
+            <a href="#fundamentos" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Fundamentos</a>
+            <a href="#ley-ohm" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Calculadora Ley de Ohm</a>
+            <a href="#componentes" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Componentes</a>
+            <a href="#senales" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Señales</a>
+            <a href="#seguridad" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Seguridad</a>
+            <a href="#quiz" class="block py-2 px-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-cyan-400">Quiz</a>
+            <a href="index.html" class="block text-center mt-4 w-full py-3 rounded-xl bg-cyan-500 text-slate-950 font-bold">Volver al Inicio</a>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <header class="hero">
-        <h1>Electrónica para Robótica Educativa</h1>
-        <p>Bienvenidos al mundo de la electrónica. Detecta información del entorno, procésala y controla dispositivos.</p>
-    </header>
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-slate-950 border-b border-slate-800">
+        <!-- Glow accents -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[350px] h-[350px] bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-    <div class="container">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Text -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-layer-group"></i> Módulo 01 • Robótica Educativa
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+                        Electrónica Aplicada: <br class="hidden sm:inline"/>
+                        <span class="gradient-text">La Energía de tus Robos</span>
+                    </h1>
+                    
+                    <p class="text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Comprende cómo fluye la corriente eléctrica, aprende a calcular variables físicas con la Ley de Ohm y domina los componentes esenciales para dar vida a prototipos y circuitos inteligentes.
+                    </p>
 
-        <!-- INTRODUCCIÓN -->
-        <section>
-            <h2>Bases Fundamentales</h2>
-            <p>La electrónica es una de las bases fundamentales de la robótica. Gracias a ella podemos detectar información del entorno, procesarla y controlar diferentes dispositivos.</p>
-            <p>Un robot necesita energía para funcionar, componentes para interactuar con el mundo y circuitos que permitan conectar todos esos elementos. Más adelante, la programación permitirá indicarle al sistema qué debe hacer.</p>
-            <p>Aprenderemos desde los conceptos más básicos hasta los conocimientos necesarios para construir proyectos de robótica con microcontroladores como el ESP32.</p>
-            
-            <div class="flow-container">
-                <span class="flow-step">Electricidad</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Circuitos</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Componentes</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Medición</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Electrónica</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Robótica</span>
-            </div>
-        </section>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#ley-ohm" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 font-black text-base hover:from-cyan-300 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-calculator"></i> Probar Simulación Ley de Ohm
+                        </a>
+                        <a href="#componentes" class="w-full sm:w-auto px-7 py-3.5 rounded-xl glass-card text-white font-semibold text-base hover:bg-slate-800 transition-all flex items-center justify-center gap-2 border border-slate-700">
+                            <i class="fa-solid fa-microchip text-cyan-400"></i> Ver Componentes
+                        </a>
+                    </div>
 
-        <!-- CONCEPTOS ELÉCTRICOS BÁSICOS -->
-        <section>
-            <h2>Magnitudes Eléctricas Fundamentales</h2>
-            <p>La electricidad está relacionada con la presencia y el movimiento de cargas eléctricas (generalmente electrones en materiales conductores). Para comprender los circuitos debemos dominar cuatro conceptos:</p>
-
-            <div class="grid-2">
-                <div class="card">
-                    <h3>1. Carga Eléctrica</h3>
-                    <p>La materia está formada por átomos con protones (carga positiva) y electrones (carga negativa). En metales como el cobre, existen electrones que se desplazan con facilidad.</p>
-                    <p>Se mide en **culombios (C)**. 1 C corresponde aproximadamente a la carga de <strong>6,24 × 10¹⁸ electrones</strong>.</p>
-                </div>
-
-                <div class="card">
-                    <h3>2. Voltaje (V)</h3>
-                    <p>Es la diferencia de potencial eléctrico entre dos puntos. Es la "presión" o diferencia de energía que impulsa el movimiento de carga.</p>
-                    <p><strong>Ejemplos comunes:</strong></p>
-                    <ul>
-                        <li>Pila AA: ~1,5 V</li>
-                        <li>Batería: 9 V</li>
-                        <li>Señales lógicas: 3,3 V o 5 V</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3>3. Corriente Eléctrica (I)</h3>
-                    <p>Representa la cantidad de carga que atraviesa una sección del circuito por unidad de tiempo. Se mide en **amperios (A)**.</p>
-                    <div class="code-block">1 A = 1 Culombio / segundo (1 C/s)</div>
-                    <p><em>Nota: La corriente consumida depende del circuito y de la resistencia aplicada.</em></p>
-                </div>
-
-                <div class="card">
-                    <h3>4. Resistencia Eléctrica (R)</h3>
-                    <p>Es la oposición que presenta un material o componente al paso de la corriente. Se mide en **ohmios (Ω)**.</p>
-                    <p>A mayor resistencia, menor será la corriente que circula manteniendo un mismo voltaje.</p>
-                </div>
-            </div>
-
-            <!-- ANALOGÍA DEL AGUA -->
-            <div class="highlight-box">
-                <h3>Analogía del Agua</h3>
-                <p>Para visualizar cómo funcionan estas magnitudes:</p>
-                <ul>
-                    <li><strong>Voltaje (V):</strong> Presión del agua en la tubería.</li>
-                    <li><strong>Corriente (I):</strong> Flujo o caudal de agua que pasa.</li>
-                    <li><strong>Resistencia (R):</strong> Estrechamiento en la tubería que dificulta el paso del agua.</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- LEY DE OHM Y POTENCIA -->
-        <section>
-            <h2>Leyes y Cálculo Eléctrico</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Ley de Ohm</h3>
-                    <p>Establece la relación directa entre voltaje, corriente y resistencia:</p>
-                    <div class="code-block">V = I × R
-I = V / R
-R = V / I</div>
-                    <p><strong>Ejemplo práctico:</strong></p>
-                    <p>Si V = 5 V y R = 1000 Ω (1 kΩ):</p>
-                    <p>I = 5 / 1000 = <strong>0,005 A (5 mA)</strong></p>
-                </div>
-
-                <div class="card">
-                    <h3>Potencia y Energía Eléctrica</h3>
-                    <p>La **potencia (P)** indica la rapidez con la que se consume o transforma energía. Se mide en **vatios (W)**.</p>
-                    <div class="code-block">P = V × I   |   P = I² × R   |   P = V² / R</div>
-                    <p>La **energía (E)** representa el consumo total en un tiempo determinado: <strong>E = P × t</strong> (medido en Joules o Wh).</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CORRIENTE Y POLARIDAD -->
-        <section class="grid-2">
-            <div class="card">
-                <h2>Corriente Continua (DC) vs. Alterna (AC)</h2>
-                <p><strong>Corriente Continua (DC):</strong> La polaridad se mantiene constante. Es la que usaremos en robótica (baterías, power banks, ESP32).</p>
-                <p><strong>Corriente Alterna (AC):</strong> La tensión cambia de sentido periódicamente (red eléctrica de los hogares).</p>
-            </div>
-
-            <div class="card">
-                <h2>Polaridad y Referencias</h2>
-                <p>En fuentes DC identificamos el polo positivo (+) y negativo (−).</p>
-                <p>En placas y microcontroladores veremos:</p>
-                <ul>
-                    <li><strong>VCC / VDD:</strong> Alimentación.</li>
-                    <li><strong>GND (Ground):</strong> Tierra o referencia común de 0 V en el circuito.</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- ESTADOS DE UN CIRCUITO -->
-        <section>
-            <h2>Circuitos Eléctricos</h2>
-            <p>Un circuito es un camino cerrado por el que circula corriente. Consta de: <strong>Fuente ➔ Conductor ➔ Carga ➔ Conductor ➔ Fuente</strong>.</p>
-
-            <div class="grid-3">
-                <div class="card">
-                    <h3>Circuito Abierto</h3>
-                    <p>Existe una interrupción en el camino eléctrico. La corriente se interrumpe (ej. un interruptor apagado).</p>
-                </div>
-                <div class="card">
-                    <h3>Circuito Cerrado</h3>
-                    <p>Camino completo sin interrupciones. La corriente fluye y activa los componentes.</p>
-                </div>
-                <div class="card warning-box" style="margin: 0;">
-                    <h3 style="color: var(--warning);">Cortocircuito</h3>
-                    <p>Conexión directa de muy baja resistencia entre puntos con diferente potencial (ej. conectar +5V directo a GND).</p>
-                    <p><strong>Peligro:</strong> Produce alto calor, daño de componentes o incendios.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- TIPOS DE CONEXIÓN -->
-        <section>
-            <h2>Configuración de Circuitos</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Circuitos en Serie</h3>
-                    <p>Los elementos se conectan uno tras otro en una sola trayectoria.</p>
-                    <ul>
-                        <li>La corriente es la misma en todo el camino.</li>
-                        <li>El voltaje se divide entre los componentes.</li>
-                        <li><strong>Rtotal = R1 + R2 + R3...</strong></li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>Circuitos en Paralelo</h3>
-                    <p>Los componentes están conectados entre los mismos dos puntos (nodos).</p>
-                    <ul>
-                        <li>El voltaje es igual en todas las ramas.</li>
-                        <li>La corriente total es la suma de cada rama.</li>
-                        <li><strong>1/Rtotal = 1/R1 + 1/R2...</strong></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- COMPONENTES ELECTRÓNICOS -->
-        <section>
-            <h2>Componentes Electrónicos Principales</h2>
-            <p>Se dividen en **pasivos** (resistencias, capacitores) y **activos / semiconductores** (diodos, transistores, integrados).</p>
-
-            <div class="grid-2">
-                <!-- Resistencias -->
-                <div class="card">
-                    <h3>Resistencia (R)</h3>
-                    <p>Limita la corriente y establece niveles de voltaje. Símbolo: Ω.</p>
-                    <p><strong>Código de colores (4 bandas):</strong></p>
-                    <ul>
-                        <li>1ª y 2ª Banda: Dígitos.</li>
-                        <li>3ª Banda: Multiplicador.</li>
-                        <li>4ª Banda: Tolerancia (variación real ±%).</li>
-                    </ul>
-                    <p><small>Potencias comunes: 1/4 W, 1/2 W.</small></p>
-                </div>
-
-                <!-- LEDs -->
-                <div class="card">
-                    <h3>LED (Diodo Emisor de Luz)</h3>
-                    <p>Diodo semiconductor que emite luz al ser polarizado en directo.</p>
-                    <ul>
-                        <li><strong>Ánodo (+):</strong> Terminal más largo.</li>
-                        <li><strong>Cátodo (−):</strong> Terminal más corto, lado plano.</li>
-                    </ul>
-                    <div class="highlight-box" style="margin: 0.5rem 0 0 0;">
-                        <small><strong>Cálculo de Resistencia para LED:</strong><br>
-                        R = (Vfuente − VLED) / ILED<br>
-                        <em>Ejemplo para 5V y LED de 2V a 10mA: R = (5-2)/0.01 = 300 Ω ➔Usar 330 Ω.</em></small>
+                    <!-- Highlights stats -->
+                    <div class="pt-6 border-t border-slate-800/80 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0 text-left">
+                        <div>
+                            <span class="block text-2xl font-black text-cyan-400">V, I, R</span>
+                            <span class="text-xs text-slate-400">Variables Clave</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-indigo-400">8+</span>
+                            <span class="text-xs text-slate-400">Componentes</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-emerald-400">Live</span>
+                            <span class="text-xs text-slate-400">Simulador Ohm</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Capacitores -->
-                <div class="card">
-                    <h3>Capacitores (C)</h3>
-                    <p>Almacenan energía en un campo eléctrico (medido en Faradios: pF, nF, µF). Usados para filtrar ruidos y estabilizar voltaje.</p>
-                    <ul>
-                        <li><strong>Cerámicos:</strong> Sin polaridad.</li>
-                        <li><strong>Electrolíticos:</strong> Polarizados (+ y -).</li>
-                    </ul>
+                <!-- Hero Right Interactive Circuit Schematic Card -->
+                <div class="lg:col-span-5">
+                    <div class="glass-card rounded-3xl p-6 border border-cyan-500/30 shadow-2xl relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                            <span class="text-xs font-mono text-cyan-400 flex items-center gap-2">
+                                <i class="fa-solid fa-bolt"></i> CIRCUITO BÁSICO LED
+                            </span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">CIRCUITO CERRADO</span>
+                        </div>
+
+                        <!-- Circuit Interactive Animation Canvas graphic -->
+                        <div class="bg-slate-950 rounded-2xl p-6 border border-slate-800 flex flex-col items-center justify-center space-y-6 relative">
+                            <!-- Battery to LED Wire animation -->
+                            <div class="w-full grid grid-cols-3 gap-4 items-center text-center">
+                                <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center">
+                                    <i class="fa-solid fa-battery-full text-3xl text-emerald-400 mb-2"></i>
+                                    <span class="text-xs font-bold text-white">Fuente DC</span>
+                                    <span class="text-[10px] text-cyan-400 font-mono">5.0 Volts (V)</span>
+                                </div>
+                                <div class="flex flex-col items-center justify-center space-y-1">
+                                    <div class="w-full h-1 bg-gradient-to-r from-emerald-500 via-cyan-400 to-amber-400 relative overflow-hidden rounded">
+                                        <div class="w-3 h-full bg-white animate-pulse"></div>
+                                    </div>
+                                    <span class="text-[10px] font-mono text-slate-400">Corriente (I)</span>
+                                </div>
+                                <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center">
+                                    <i class="fa-solid fa-lightbulb text-3xl text-amber-400 mb-2 animate-pulse"></i>
+                                    <span class="text-xs font-bold text-white">Carga / LED</span>
+                                    <span class="text-[10px] text-amber-300 font-mono">20 mA (I)</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 w-full text-xs text-slate-300 flex items-center gap-3">
+                                <i class="fa-solid fa-circle-info text-cyan-400 text-lg shrink-0"></i>
+                                <span>Una corriente eléctrica solo puede fluir si existe un <strong>camino cerrado continuo</strong> desde el polo positivo al polo negativo.</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Diodos -->
-                <div class="card">
-                    <h3>Diodos</h3>
-                    <p>Permiten el paso de corriente en un solo sentido (Ánodo ➔ Cátodo).</p>
-                    <p><strong>Tipos:</strong> Rectificadores, Zener, Schottky, LED, Fotodiodos.</p>
-                </div>
-
-                <!-- Transistores y MOSFETs -->
-                <div class="card">
-                    <h3>Transistores (BJT y MOSFET)</h3>
-                    <p>Funcionan como interruptores electrónicos o amplificadores.</p>
-                    <ul>
-                        <li><strong>BJT (NPN/PNP):</strong> Terminales Colector, Base y Emisor.</li>
-                        <li><strong>MOSFET:</strong> Ideales para manejar mayor potencia (Motores, Bombas). Terminales: Gate, Drain, Source.</li>
-                    </ul>
-                </div>
-
-                <!-- Interruptores y Sensores Pasivos -->
-                <div class="card">
-                    <h3>Entradas Pasivas (LDR, Termistor, Potenciómetro)</h3>
-                    <ul>
-                        <li><strong>Potenciómetro:</strong> Resistencia variable de 3 pines.</li>
-                        <li><strong>LDR:</strong> Resistencia que cambia con la luz.</li>
-                        <li><strong>Termistor (NTC/PTC):</strong> Resistencia sensible a la temperatura.</li>
-                    </ul>
-                </div>
             </div>
-        </section>
+        </div>
+    </header>
 
-        <!-- POTENCIA Y PROTECCIÓN -->
-        <section>
-            <h2>Control de Potencia y Protección</h2>
-            <div class="grid-3">
-                <div class="card">
-                    <h3>Relé</h3>
-                    <p>Interruptor electromecánico que permite a un microcontrolador controlar cargas de alto voltaje aisladas eléctricamente.</p>
-                </div>
-                <div class="card">
-                    <h3>Reguladores y Convertidores DC-DC</h3>
-                    <p>Cambian y estabilizan voltajes:</p>
-                    <ul>
-                        <li><strong>Buck:</strong> Reduce voltaje (ej. 12V ➔ 5V).</li>
-                        <li><strong>Boost:</strong> Aumenta voltaje (ej. 3.7V ➔ 5V).</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>Protecciones</h3>
-                    <p>Fusibles, diodos de protección anti-retorno, sistemas de protección térmica y sobretensión para evitar daños permanentes.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- MONTAJE: PROTOBOARD Y PCB -->
-        <section>
-            <h2>Herramientas de Montaje y Construcción</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Protoboard (Breadboard)</h3>
-                    <p>Placa de pruebas sin soldadura. Permite armar y modificar circuitos rápidamente mediante conexiones internas de contactos metálicos.</p>
-                </div>
-                <div class="card">
-                    <h3>Placa de Circuito Impreso (PCB)</h3>
-                    <p>Placa definitiva con pistas de cobre. Elementos:</p>
-                    <ul>
-                        <li><strong>Pads:</strong> Puntos de soldadura.</li>
-                        <li><strong>Pistas:</strong> Caminos de cobre.</li>
-                        <li><strong>Vías:</strong> Conexiones entre capas.</li>
-                        <li><strong>Serigrafía:</strong> Texto con nombres de componentes (R1, LED1, etc.).</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- INSTRUMENTACIÓN -->
-        <section>
-            <h2>El Multímetro y Mediciones</h2>
-            <p>Es la herramienta básica de diagnóstico. Reglas principales de uso:</p>
-            
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Medición</th>
-                            <th>Modo de Conexión</th>
-                            <th>Precaución Especial</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Voltaje (V)</strong></td>
-                            <td>En <strong>Paralelo</strong> con el componente</td>
-                            <td>Seleccionar el rango de V DC correcto.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Resistencia (Ω)</strong></td>
-                            <td>En las terminales del componente</td>
-                            <td><strong>¡Circuito sin energía!</strong></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Continuidad</strong></td>
-                            <td>Entre dos puntos aislados</td>
-                            <td>Emite pitido si hay conexión eléctrica.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Corriente (A)</strong></td>
-                            <td>En <strong>Serie</strong> dentro del circuito</td>
-                            <td><strong>¡Nunca colocar directo a VCC y GND!</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- SEÑALES Y MICROCONTROLADORES -->
-        <section>
-            <h2>Señales en Robótica: Entradas y Salidas</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Señales Digitales vs Analógicas</h3>
-                    <p><strong>Digitales:</strong> Tienen solo dos estados: <code>HIGH</code> (1 / VCC) o <code>LOW</code> (0 / GND).</p>
-                    <p><strong>Analógicas:</strong> Varían en un rango continuo (ej. 0.5V, 1.8V, 3.1V).</p>
-                </div>
-                <div class="card">
-                    <h3>ADC y PWM</h3>
-                    <p><strong>ADC (Convertidor Analógico-Digital):</strong> Traduce voltajes continuos a números para el programa.</p>
-                    <p><strong>PWM (Modulación por Ancho de Pulso):</strong> Simula salidas analógicas variando el tiempo de encendido/apagado de pulsos digitales.</p>
-                </div>
+    <!-- Section: Electronics Fundamentals -->
+    <section id="fundamentos" class="py-20 bg-slate-900/40 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Conceptos Universales</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Las 3 Magnitudes <span class="text-cyan-400">Fundamentales</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+                <p class="text-slate-300">
+                    Imagina la electricidad como agua fluyendo por una tubería. Esta analogía te ayudará a visualizar cómo funcionan el Voltaje, la Corriente y la Resistencia.
+                </p>
             </div>
 
-            <!-- ADAPTACIÓN DE VOLTAJES -->
-            <div class="warning-box">
-                <h3>¡Atención con los Niveles Lógicos (3,3 V vs 5 V)!</h3>
-                <p>El microcontrolador <strong>ESP32 trabaja con nivel lógico de 3,3 V</strong>. Conectar señales o sensores directamente de 5 V a un pin GPIO del ESP32 que no sea tolerante puede destruirlo. Utiliza un <strong>divisor de tensión</strong> o un adaptador de nivel lógico.</p>
-                <div class="code-block">Divisor de tensión: Vout = Vin × [ R2 / (R1 + R2) ]</div>
-            </div>
-        </section>
-
-        <!-- INTERFAZ DE POTENCIA CON ESP32 -->
-        <section class="highlight-box">
-            <h2>El ESP32 y la Interfaz de Potencia</h2>
-            <p><strong>Regla de oro:</strong> Un pin GPIO del ESP32 es para enviar y recibir <em>señales</em> de control, <strong>no para alimentar cargas pesadas</strong>.</p>
-
-            <div class="flow-container">
-                <span class="flow-step">ESP32 (3.3V Signal)</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Driver / Transistor / Relé</span>
-                <span class="flow-arrow">➔</span>
-                <span class="flow-step">Carga (Motor, Bomba, Solenoide)</span>
-            </div>
-        </section>
-
-        <!-- SENSORES Y ACTUADORES -->
-        <section>
-            <h2>Sensores y Actuadores</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Sensores (Entradas)</h3>
-                    <p>Convierten variables físicas en datos eléctricos:</p>
-                    <ul>
-                        <li><strong>HC-SR04:</strong> Distancia por ultrasonido.</li>
-                        <li><strong>DHT11 / DS18B20:</strong> Temperatura y humedad.</li>
-                        <li><strong>PIR:</strong> Detección de movimiento.</li>
-                        <li><strong>MPU6050:</strong> Acelerómetro y giroscopio.</li>
-                    </ul>
+            <!-- 3 Core Cards (Voltage, Current, Resistance) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Voltage (V) -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all group flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl group-hover:bg-cyan-500 group-hover:text-slate-950 transition-all">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Voltaje (V)</h3>
+                        <p class="text-xs font-mono text-cyan-300 uppercase tracking-widest">Tensión / Diferencia de Potencial</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Es la fuerza o presión eléctrica que empuja a los electrones a moverse a través de un conductor.
+                        </p>
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <p><strong class="text-cyan-400">Unidad de Medida:</strong> Voltios (V)</p>
+                            <p><strong class="text-slate-200">Analogía del Agua:</strong> La presión del agua en el tanque o la altura de la cascada.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>Actuadores (Salidas)</h3>
-                    <p>Transforman órdenes eléctricas en acciones físicas:</p>
-                    <ul>
-                        <li><strong>Motor DC:</strong> Requiere Puente H (Driver).</li>
-                        <li><strong>Servomotor (SG90):</strong> Control de posición angular preciso.</li>
-                        <li><strong>Buzzer:</strong> Emitir avisos sonoros o alarmas.</li>
-                    </ul>
+
+                <!-- Current (I) -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-indigo-500/50 transition-all group flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-2xl group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-water"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Corriente (I)</h3>
+                        <p class="text-xs font-mono text-indigo-300 uppercase tracking-widest">Intensidad Eléctrica</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Es la cantidad o caudal de carga eléctrica (electrones) que fluye por un punto del circuito en un segundo.
+                        </p>
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <p><strong class="text-indigo-400">Unidad de Medida:</strong> Amperios (A) / Miliamperios (mA)</p>
+                            <p><strong class="text-slate-200">Analogía del Agua:</strong> La cantidad de litros de agua que fluyen por la tubería por segundo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resistance (R) -->
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-amber-500/50 transition-all group flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:bg-amber-500 group-hover:text-slate-950 transition-all">
+                            <i class="fa-solid fa-filter"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Resistencia (R)</h3>
+                        <p class="text-xs font-mono text-amber-300 uppercase tracking-widest">Oposición al Flujo</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Es la dificultad u oposición que presenta un material al libre paso de la corriente eléctrica.
+                        </p>
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                            <p><strong class="text-amber-400">Unidad de Medida:</strong> Ohmios (Ω)</p>
+                            <p><strong class="text-slate-200">Analogía del Agua:</strong> La estrechez o una válvula que restringe el paso en la tubería.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Flow Process Pipeline -->
+            <div class="mt-16 glass-card p-6 sm:p-8 rounded-3xl border border-slate-800">
+                <h3 class="text-xl font-bold text-white mb-6 text-center flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-diagram-next text-cyan-400"></i> Cadena Funcional en un Circuito Electrónico
+                </h3>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-cyan-400 font-mono">1. FUENTE</span>
+                        <h4 class="text-white font-semibold text-sm">Batería / ESP32</h4>
+                        <p class="text-slate-400 text-xs">Suministra la presión (Voltaje V).</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-indigo-400 font-mono">2. CONDUCTOR</span>
+                        <h4 class="text-white font-semibold text-sm">Cables & Protoboard</h4>
+                        <p class="text-slate-400 text-xs">Permiten el desplazamiento libre de electrones.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-amber-400 font-mono">3. CONTROL</span>
+                        <h4 class="text-white font-semibold text-sm">Resistencia / Sensor</h4>
+                        <p class="text-slate-400 text-xs">Regula la intensidad (Corriente I).</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+                        <span class="text-xs font-bold text-emerald-400 font-mono">4. ACTUADOR</span>
+                        <h4 class="text-white font-semibold text-sm">LED / Motor / Buzzer</h4>
+                        <p class="text-slate-400 text-xs">Transforma la energía en luz, movimiento o sonido.</p>
+                    </div>
                 </div>
             </div>
-        </section>
 
-    </div>
+        </div>
+    </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <h2>Electrónica para Robótica Educativa</h2>
-        <p style="margin-top: 1rem;">Construye la base física de todos tus proyectos tecnológicos.</p>
-        <p>© Robótica Educativa - Todos los derechos reservados</p>
+    <!-- Section: Interactive Ohm's Law Simulator -->
+    <section id="ley-ohm" class="py-20 bg-slate-950 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Laboratorio Virtual</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Calculadora Interactiva de la <span class="gradient-text">Ley de Ohm</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+                <p class="text-slate-400">
+                    Ajusta el Voltaje ($V$) y la Resistencia ($R$) para observar cómo cambia la Corriente resultante ($I = V / R$) y el brillo del diodo LED.
+                </p>
+            </div>
+
+            <!-- Calculator Interactive Box -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 grid grid-cols-1 lg:grid-cols-12 gap-8 shadow-2xl">
+                
+                <!-- Controls Column -->
+                <div class="lg:col-span-5 space-y-6">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-cyan-400"></i> Variables de Entrada
+                    </h3>
+
+                    <!-- Slider 1: Voltage V -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <label for="slider-voltage" class="text-sm font-semibold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-battery-half text-cyan-400"></i> Voltaje (V)
+                            </label>
+                            <span id="val-voltage" class="text-base font-mono font-extrabold text-cyan-400">5.0 V</span>
+                        </div>
+                        <input type="range" id="slider-voltage" min="0" max="12" step="0.5" value="5.0" class="w-full accent-cyan-400 cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                            <span>0V (Sin energía)</span>
+                            <span>3.3V (ESP32)</span>
+                            <span>5V (USB)</span>
+                            <span>12V (Motores)</span>
+                        </div>
+                    </div>
+
+                    <!-- Slider 2: Resistance R -->
+                    <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <label for="slider-resistance" class="text-sm font-semibold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-microchip text-amber-400"></i> Resistencia (R)
+                            </label>
+                            <span id="val-resistance" class="text-base font-mono font-extrabold text-amber-400">220 Ω</span>
+                        </div>
+                        <input type="range" id="slider-resistance" min="10" max="1000" step="10" value="220" class="w-full accent-amber-400 cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                            <span>10 Ω (Muy Baja)</span>
+                            <span>220 Ω (LED Estándar)</span>
+                            <span>1K Ω (Alta)</span>
+                        </div>
+                    </div>
+
+                    <!-- Formula Formula Box -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-cyan-500/30 text-center space-y-2">
+                        <span class="text-xs font-mono text-slate-400 uppercase">Fórmula Matemática</span>
+                        <div class="text-2xl font-black font-mono tracking-widest text-white">
+                            I = <span class="text-cyan-400">V</span> / <span class="text-amber-400">R</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Visualizer Output Column -->
+                <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
+                    
+                    <!-- Result Display Cards -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1 text-center">
+                            <span class="text-xs font-mono text-slate-400 uppercase">Corriente Resultante (I)</span>
+                            <div id="result-current-ma" class="text-3xl font-black font-mono text-indigo-400">22.73 mA</div>
+                            <span id="result-current-a" class="text-xs font-mono text-slate-500 block">0.0227 Amperios</span>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1 text-center">
+                            <span class="text-xs font-mono text-slate-400 uppercase">Potencia Disipada (P)</span>
+                            <div id="result-power-mw" class="text-3xl font-black font-mono text-emerald-400">113.6 mW</div>
+                            <span class="text-xs font-mono text-slate-500 block">P = V × I</span>
+                        </div>
+                    </div>
+
+                    <!-- Animated Component Graphic Simulation -->
+                    <div class="p-6 rounded-2xl bg-slate-950 border border-slate-800 flex flex-col items-center justify-center space-y-4 min-h-[220px]">
+                        <span class="text-xs font-mono text-slate-400 uppercase">Respuesta Visual del LED</span>
+                        
+                        <!-- Glowing Interactive LED Graphic -->
+                        <div class="relative flex items-center justify-center">
+                            <div id="led-glow" class="w-24 h-24 rounded-full bg-amber-500/20 blur-xl transition-all duration-300"></div>
+                            <div id="led-bulb" class="w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center text-3xl text-slate-600 shadow-2xl transition-all duration-300 relative z-10">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </div>
+                        </div>
+
+                        <!-- Safety Status Alert -->
+                        <div id="circuit-status-alert" class="w-full text-center py-2 px-4 rounded-xl text-xs font-bold transition-all">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Component Explorer -->
+    <section id="componentes" class="py-20 bg-slate-900/40 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Catálogo Hardware</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Componentes Electrónicos <span class="text-cyan-400">Clave</span></h2>
+                <div class="w-20 h-1 bg-cyan-500 mx-auto rounded-full"></div>
+                <p class="text-slate-300">
+                    Explora los elementos de hardware esenciales utilizados en la construcción de prototipos de robótica.
+                </p>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
+                <button onclick="filterComponents('all')" class="comp-filter-btn active px-5 py-2 rounded-xl text-sm font-bold bg-cyan-500 text-slate-950 transition-all shadow-lg shadow-cyan-500/20">
+                    Todos
+                </button>
+                <button onclick="filterComponents('pasivo')" class="comp-filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700">
+                    Pasivos
+                </button>
+                <button onclick="filterComponents('activo')" class="comp-filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700">
+                    Activos
+                </button>
+                <button onclick="filterComponents('sensor')" class="comp-filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700">
+                    Sensores
+                </button>
+                <button onclick="filterComponents('actuador')" class="comp-filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700">
+                    Actuadores
+                </button>
+            </div>
+
+            <!-- Components Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="components-grid">
+                
+                <!-- Component 1: Resistencia -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="pasivo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400">PASIVO</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">Resistencia</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Limita la intensidad de corriente en el circuito para proteger componentes sensibles como los LEDs.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('resistencia')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-xs font-bold transition-all">
+                        Detalles Térmicos & Color
+                    </button>
+                </div>
+
+                <!-- Component 2: LED -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="actuador activo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-lightbulb"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300">ACTUADOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">Diodo LED</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Diodo emisor de luz que permite el paso de corriente en una sola dirección (Ánodo + a Cátodo -).
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('led')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-xs font-bold transition-all">
+                        Ver Polaridad & Tipos
+                    </button>
+                </div>
+
+                <!-- Component 3: Condensador -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="pasivo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-charging-station"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-400">PASIVO</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">Capacitor / Condensador</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Almacena energía en un campo eléctrico temporalmente y estabiliza picos de voltaje en el circuito.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('capacitor')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-indigo-500 hover:text-white text-indigo-400 text-xs font-bold transition-all">
+                        Ver Funcionamiento
+                    </button>
+                </div>
+
+                <!-- Component 4: Transistor -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="activo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-toggle-on"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-500/20 text-purple-300">ACTIVO</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">Transistor (NPN/PNP)</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Funciona como un interruptor electrónico de alta velocidad o como amplificador de señales.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('transistor')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-purple-500 hover:text-white text-purple-400 text-xs font-bold transition-all">
+                        Ver Modos Conmutación
+                    </button>
+                </div>
+
+                <!-- Component 5: Sensor PIR -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="sensor activo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-person-walking"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300">SENSOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">Sensor Movimiento PIR</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Detecta radiación infrarroja emitida por cuerpos en movimiento en su campo de visión.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('pir')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 text-xs font-bold transition-all">
+                        Ver Salida Digital
+                    </button>
+                </div>
+
+                <!-- Component 6: Sensor LDR -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="sensor pasivo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300">SENSOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">Fotorresistencia LDR</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Su resistencia ohmiaca varía en relación directa con la cantidad de luz que recibe su superficie.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('ldr')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-amber-400 text-xs font-bold transition-all">
+                        Ver Respuesta Analógica
+                    </button>
+                </div>
+
+                <!-- Component 7: Servomotor -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="actuador activo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-gear"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300">ACTUADOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">Servomotor SG90</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Actuador que permite controlar con precisión la posición angular (0° a 180°) mediante pulsos PWM.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('servo')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-rose-500 hover:text-white text-rose-400 text-xs font-bold transition-all">
+                        Ver Señal PWM
+                    </button>
+                </div>
+
+                <!-- Component 8: Buzzer -->
+                <div class="comp-card glass-card rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group" data-category="actuador pasivo">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300">ACTUADOR</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">Zumbador / Buzzer</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                            Transforma señales eléctricas en frecuencias audibles para alertas acústicas en el robot.
+                        </p>
+                    </div>
+                    <button onclick="openCompModal('buzzer')" class="w-full py-2 rounded-xl bg-slate-800 hover:bg-blue-500 hover:text-white text-blue-400 text-xs font-bold transition-all">
+                        Ver Tipos Activo/Pasivo
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Analog vs Digital Signals -->
+    <section id="senales" class="py-20 bg-slate-950 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Text Explanation -->
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Teoría de Señales</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+                        Señales <span class="text-cyan-400">Digitales</span> vs. <span class="text-indigo-400">Analógicas</span>
+                    </h2>
+                    <p class="text-slate-300 leading-relaxed text-sm">
+                        Los microcontroladores como el ESP32 interactúan con el mundo físico procesando dos tipos principales de señales eléctricas:
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-xl glass-card border border-cyan-500/30">
+                            <h4 class="font-bold text-cyan-300 text-sm flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-square-full text-xs"></i> Señal Digital (HIGH / LOW)
+                            </h4>
+                            <p class="text-slate-400 text-xs">Solo posee dos estados posibles: <strong>1 (HIGH / 3.3V o 5V)</strong> o <strong>0 (LOW / 0V)</strong>. Ejemplo: Pulsador encendido/apagado.</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl glass-card border border-indigo-500/30">
+                            <h4 class="font-bold text-indigo-300 text-sm flex items-center gap-2 mb-1">
+                                <i class="fa-solid fa-wave-square text-xs"></i> Señal Analógica (Rango Continuo)
+                            </h4>
+                            <p class="text-slate-400 text-xs">Varía de forma continua dentro de un rango de valores (ejemplo 0V a 3.3V mapeado de 0 a 4095 en el ESP32). Ejemplo: Temperatura o luz ambiental.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Canvas Oscilloscope Visualizer -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card rounded-3xl p-6 border border-slate-800 space-y-4 shadow-2xl">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                            <span class="text-xs font-mono text-cyan-400 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line"></i> OSCILOSCOPIO VIRTUAL DE SEÑAL
+                            </span>
+                            
+                            <!-- Signal Selector buttons -->
+                            <div class="flex gap-2">
+                                <button id="btn-sig-digital" onclick="setSignalType('digital')" class="px-3 py-1 rounded-lg text-xs font-bold bg-cyan-500 text-slate-950">
+                                    Digital (Cuadrada)
+                                </button>
+                                <button id="btn-sig-analog" onclick="setSignalType('analog')" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">
+                                    Analógica (Sinuoidal)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Canvas Box -->
+                        <div class="bg-slate-950 rounded-2xl p-2 border border-slate-800 overflow-hidden relative">
+                            <canvas id="signalCanvas" class="w-full h-60 block"></canvas>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs font-mono text-slate-400">
+                            <span id="signal-desc-label">Estado: Onda Digital Cuadrada (0V / 3.3V)</span>
+                            <span class="text-emerald-400">Muestreo: 1 kHz</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Safety & Best Practices -->
+    <section id="seguridad" class="py-20 bg-slate-900/40 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold uppercase tracking-wider">Prevención y Protección</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Seguridad en el <span class="text-rose-400">Laboratorio</span></h2>
+                <div class="w-20 h-1 bg-rose-500 mx-auto rounded-full"></div>
+                <p class="text-slate-300">
+                    Sigue estas recomendaciones esenciales para proteger tus componentes electrónicos y trabajar con total seguridad.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-rose-500/40 transition-all space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">1. Revisa la Polaridad</h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Conectar el positivo (+ VCC) y el negativo (- GND) invertidos puede quemar microcontroladores y sensores al instante.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-rose-500/40 transition-all space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-plug-circle-xmark"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">2. Desconecta antes de Modificar</h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Desconecta siempre la fuente USB o batería mientras conectas o mueves cables en la protoboard para evitar cortocircuitos.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-rose-500/40 transition-all space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">3. Usa Resistencias Limitadoras</h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Nunca conectes un LED directamente a los pines del ESP32 sin una resistencia en serie de al menos 220 Ω.
+                    </p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-rose-500/40 transition-all space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-hand-sparkles"></i>
+                    </div>
+                    <h4 class="text-lg font-bold text-white">4. Descarga Estática (ESD)</h4>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Toca una superficie metálica conectada a tierra antes de manipular componentes CMOS sensibles como el procesador ESP32.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Interactive Quiz / Evaluation -->
+    <section id="quiz" class="py-20 bg-slate-950">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 space-y-3">
+                <span class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">Evaluación Rápida</span>
+                <h2 class="text-3xl font-extrabold text-white">Demuestra tu <span class="gradient-text">Aprendizaje</span></h2>
+                <p class="text-slate-400 text-sm">Responde estas preguntas para validar los conocimientos del Módulo de Electrónica.</p>
+            </div>
+
+            <!-- Quiz Main Container Card -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-6">
+                
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <span id="quiz-progress" class="text-xs font-mono text-cyan-400">Pregunta 1 de 3</span>
+                    <span id="quiz-score" class="text-xs font-mono text-emerald-400">Puntaje: 0</span>
+                </div>
+
+                <!-- Dynamic Quiz Question Box -->
+                <div id="quiz-body" class="space-y-4">
+                    <h3 id="quiz-question" class="text-lg font-bold text-white">Cargando pregunta...</h3>
+                    <div id="quiz-options" class="space-y-2">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Feedback Message -->
+                <div id="quiz-feedback" class="hidden p-4 rounded-xl text-xs font-bold"></div>
+
+                <!-- Quiz Next / Reset Button -->
+                <div class="flex justify-end pt-2">
+                    <button id="quiz-next-btn" onclick="nextQuestion()" class="px-6 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-sm hover:bg-cyan-400 transition-all hidden">
+                        Siguiente Pregunta <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <div class="flex items-center justify-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center text-slate-950 font-black">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <span class="text-lg font-bold text-white">ROBÓTICA EDUCATIVA • MÓDULO 1</span>
+            </div>
+            <p class="text-slate-500 text-xs max-w-lg mx-auto">
+                Aprende, experimenta y crea circuitos inteligentes de forma práctica e interactiva.
+            </p>
+            <div class="pt-6 border-t border-slate-800 text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <span>© 2026 Robótica Educativa. Plataforma Interactiva.</span>
+                <a href="index.html" class="text-cyan-400 hover:underline">Volver a la Página Principal</a>
+            </div>
+        </div>
     </footer>
 
+    <!-- Component Detail Modal -->
+    <div id="comp-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-card max-w-lg w-full rounded-2xl p-6 border border-cyan-500/40 relative space-y-4">
+            <button onclick="closeCompModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 id="modal-comp-title" class="text-2xl font-bold text-white"></h3>
+            <div id="modal-comp-body" class="text-sm text-slate-300 space-y-3"></div>
+            <button onclick="closeCompModal()" class="w-full py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-sm">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Code -->
+    <script>
+        // --- 1. Ohm's Law Simulator Logic ---
+        const sliderV = document.getElementById('slider-voltage');
+        const sliderR = document.getElementById('slider-resistance');
+        const valV = document.getElementById('val-voltage');
+        const valR = document.getElementById('val-resistance');
+        const resultMa = document.getElementById('result-current-ma');
+        const resultA = document.getElementById('result-current-a');
+        const resultMw = document.getElementById('result-power-mw');
+        const ledGlow = document.getElementById('led-glow');
+        const ledBulb = document.getElementById('led-bulb');
+        const statusAlert = document.getElementById('circuit-status-alert');
+
+        function updateOhmSimulator() {
+            const v = parseFloat(sliderV.value);
+            const r = parseFloat(sliderR.value);
+
+            valV.textContent = `${v.toFixed(1)} V`;
+            valR.textContent = `${r} Ω`;
+
+            // I = V / R (in Amperes)
+            const currentA = v / r;
+            const currentMa = currentA * 1000;
+            const powerMw = (v * currentA) * 1000;
+
+            resultMa.textContent = `${currentMa.toFixed(2)} mA`;
+            resultA.textContent = `${currentA.toFixed(4)} Amperios`;
+            resultMw.textContent = `${powerMw.toFixed(1)} mW`;
+
+            // Visual feedback adjustments
+            if (v === 0) {
+                // Off
+                ledGlow.style.opacity = '0';
+                ledBulb.className = "w-16 h-16 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center text-3xl text-slate-600 relative z-10 transition-all duration-300";
+                statusAlert.textContent = "Circuito Inactivo (Sin Voltaje)";
+                statusAlert.className = "w-full text-center py-2 px-4 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 border border-slate-800";
+            } else if (currentMa > 30) {
+                // Danger Overcurrent!
+                ledGlow.style.opacity = '1';
+                ledGlow.className = "w-28 h-28 rounded-full bg-rose-500 blur-2xl transition-all duration-300";
+                ledBulb.className = "w-16 h-16 rounded-full bg-rose-500 border-2 border-rose-300 flex items-center justify-center text-3xl text-white shadow-rose-500/80 relative z-10 animate-bounce";
+                statusAlert.textContent = "⚠️ ¡PELIGRO DE SOBRECORRIENTE! (>30mA pueden dañar un LED)";
+                statusAlert.className = "w-full text-center py-2 px-4 rounded-xl text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40";
+            } else {
+                // Safe operation
+                const brightnessRatio = Math.min(currentMa / 25, 1);
+                ledGlow.style.opacity = brightnessRatio.toString();
+                ledGlow.className = "w-24 h-24 rounded-full bg-amber-400 blur-xl transition-all duration-300";
+                ledBulb.className = "w-16 h-16 rounded-full bg-amber-400 border-2 border-amber-200 flex items-center justify-center text-3xl text-slate-950 shadow-amber-400/50 relative z-10";
+                statusAlert.textContent = "✓ Funcionamiento Seguro del LED";
+                statusAlert.className = "w-full text-center py-2 px-4 rounded-xl text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+            }
+        }
+
+        sliderV.addEventListener('input', updateOhmSimulator);
+        sliderR.addEventListener('input', updateOhmSimulator);
+        updateOhmSimulator(); // Initial run
+
+        // --- 2. Component Filtering ---
+        function filterComponents(category) {
+            const cards = document.querySelectorAll('.comp-card');
+            const buttons = document.querySelectorAll('.comp-filter-btn');
+
+            buttons.forEach(btn => {
+                btn.className = "comp-filter-btn px-5 py-2 rounded-xl text-sm font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700";
+            });
+            event.currentTarget.className = "comp-filter-btn active px-5 py-2 rounded-xl text-sm font-bold bg-cyan-500 text-slate-950 transition-all shadow-lg shadow-cyan-500/20";
+
+            cards.forEach(card => {
+                const cats = card.getAttribute('data-category');
+                if (category === 'all' || cats.includes(category)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- 3. Component Details Modal ---
+        const compModal = document.getElementById('comp-modal');
+        const modalTitle = document.getElementById('modal-comp-title');
+        const modalBody = document.getElementById('modal-comp-body');
+
+        const compDetailsData = {
+            resistencia: {
+                title: 'Resistencia (Resistor)',
+                html: `<p><strong>Función:</strong> Limita y regula el flujo de electrones en el circuito.</p>
+                       <p><strong>Código de Colores:</strong> Las franjas de colores indican su valor en ohmios (Ω) y tolerancia.</p>
+                       <p><strong>Consejo de Robótica:</strong> Para LEDs conectados a 5V, se recomienda una resistencia de <strong>220 Ω a 330 Ω</strong>.</p>`
+            },
+            led: {
+                title: 'Diodo LED (Light Emitting Diode)',
+                html: `<p><strong>Polaridad Requerida:</strong> 
+                       <br>• <strong>Ánodo (+):</strong> Pata más larga (conectar al positivo).
+                       <br>• <strong>Cátodo (-):</strong> Pata más corta (conectar a GND tierra).</p>
+                       <p><strong>Precaución:</strong> Sin resistencia en serie, se destruye térmicamente por exceso de corriente.</p>`
+            },
+            capacitor: {
+                title: 'Capacitor / Condensador',
+                html: `<p><strong>Función Principal:</strong> Filtra ruído eléctrico y almacena pequeñas cargas de energía.</p>
+                       <p><strong>Tipos Comunes:</strong> Electrolíticos (tienen polaridad +/-) y Cerámicos (sin polaridad).</p>`
+            },
+            transistor: {
+                title: 'Transistor Bipolar (BJT/MOSFET)',
+                html: `<p><strong>Tres Terminales:</strong> Base (o Gate), Colector y Emisor.</p>
+                       <p><strong>Uso en Robótica:</strong> Permite que una pequeña señal de 3.3V del ESP32 active motores de alta potencia de 12V.</p>`
+            },
+            pir: {
+                title: 'Sensor Infrarrojo Pasivo (PIR)',
+                html: `<p><strong>Salida:</strong> Señal digital (HIGH cuando detecta movimiento térmico humano).</p>
+                       <p><strong>Ajustes:</strong> Posee potenciómetros para ajustar el tiempo de retardo y la sensibilidad.</p>`
+            },
+            ldr: {
+                title: 'Fotorresistencia LDR',
+                html: `<p><strong>Comportamiento:</strong> A mayor luz solar, menor resistencia (cercana a 100 Ω). En oscuridad total, la resistencia sube a más de 1 MΩ.</p>
+                       <p><strong>Conexión:</strong> Se usa con un divisor de tensión para leer valores en el pin analógico del ESP32.</p>`
+            },
+            servo: {
+                title: 'Servomotor SG90',
+                html: `<p><strong>Control:</strong> Mediante señales PWM (Modulación por Ancho de Pulsos) a 50Hz.</p>
+                       <p><strong>Cables estándar:</strong> Marrón (GND), Rojo (5V), Naranja (Señal de Control GPIO).</p>`
+            },
+            buzzer: {
+                title: 'Zumbador (Buzzer)',
+                html: `<p><strong>Activo:</strong> Emite un tono fijo al recibir 5V directo.</p>
+                       <p><strong>Pasivo:</strong> Requiere una frecuencia generada por código para reproducir melodías musicalmente.</p>`
+            }
+        };
+
+        function openCompModal(key) {
+            const item = compDetailsData[key];
+            if(item) {
+                modalTitle.textContent = item.title;
+                modalBody.innerHTML = item.html;
+                compModal.classList.remove('hidden');
+            }
+        }
+
+        function closeCompModal() {
+            compModal.classList.add('hidden');
+        }
+
+        // --- 4. Canvas Oscilloscope Signal Visualizer ---
+        const canvas = document.getElementById('signalCanvas');
+        const ctx = canvas.getContext('2d');
+        let signalType = 'digital';
+        let animationFrameId;
+        let step = 0;
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight || 240;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function setSignalType(type) {
+            signalType = type;
+            document.getElementById('btn-sig-digital').className = type === 'digital' ? 
+                'px-3 py-1 rounded-lg text-xs font-bold bg-cyan-500 text-slate-950' : 
+                'px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
+            
+            document.getElementById('btn-sig-analog').className = type === 'analog' ? 
+                'px-3 py-1 rounded-lg text-xs font-bold bg-indigo-500 text-white' : 
+                'px-3 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700';
+
+            document.getElementById('signal-desc-label').textContent = type === 'digital' ?
+                'Estado: Onda Digital Cuadrada (Discreta 0V / 3.3V)' :
+                'Estado: Onda Analógica Continua (Variable 0V a 3.3V)';
+        }
+
+        function drawOscilloscope() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid lines
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            const gridSpacing = 30;
+            for (let x = 0; x < canvas.width; x += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < canvas.height; y += gridSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Draw wave
+            ctx.beginPath();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = signalType === 'digital' ? '#22d3ee' : '#818cf8';
+
+            const midY = canvas.height / 2;
+            const amplitude = canvas.height * 0.35;
+
+            for (let x = 0; x < canvas.width; x++) {
+                let y;
+                if (signalType === 'digital') {
+                    // Square wave
+                    const cycle = Math.floor((x + step) / 60) % 2;
+                    y = cycle === 0 ? midY - amplitude : midY + amplitude;
+                } else {
+                    // Sine wave
+                    y = midY + Math.sin((x + step) * 0.03) * amplitude;
+                }
+
+                if (x === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+
+            step += 2;
+            animationFrameId = requestAnimationFrame(drawOscilloscope);
+        }
+        drawOscilloscope();
+
+        // --- 5. Interactive Quiz Logic ---
+        const quizData = [
+            {
+                q: "¿Qué sucede con la corriente (I) si aumentamos la Resistencia (R) manteniendo el mismo Voltaje (V)?",
+                options: [
+                    "Aumenta proporcionalmente",
+                    "Disminuye según la Ley de Ohm (I = V/R)",
+                    "Permanece exactamente igual",
+                    "El circuito entra en cortocircuito"
+                ],
+                correct: 1
+            },
+            {
+                q: "¿Cuál es la función principal de colocar una resistencia en serie con un diodo LED?",
+                options: [
+                    "Aumentar el brillo al máximo",
+                    "Cambiar el color del diodo",
+                    "Limitar la corriente para evitar que se queme",
+                    "Convertir la señal digital en analógica"
+                ],
+                correct: 2
+            },
+            {
+                q: "¿Qué tipo de señal posee solo dos estados posibles (HIGH y LOW)?",
+                options: [
+                    "Señal Analógica",
+                    "Señal Digital",
+                    "Señal Sinusoidal",
+                    "Señal Continua"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuizIdx = 0;
+        let quizScore = 0;
+
+        function loadQuizQuestion() {
+            const q = quizData[currentQuizIdx];
+            document.getElementById('quiz-progress').textContent = `Pregunta ${currentQuizIdx + 1} de ${quizData.length}`;
+            document.getElementById('quiz-score').textContent = `Puntaje: ${quizScore}`;
+            document.getElementById('quiz-question').textContent = q.q;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quiz-feedback').className = 'hidden p-4 rounded-xl text-xs font-bold';
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 text-slate-200 text-xs sm:text-sm transition-all";
+                btn.textContent = `${idx + 1}. ${opt}`;
+                btn.onclick = () => selectQuizAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectQuizAnswer(selectedIndex) {
+            const q = quizData[currentQuizIdx];
+            const feedback = document.getElementById('quiz-feedback');
+            const buttons = document.getElementById('quiz-options').children;
+
+            // Disable all buttons after pick
+            for(let b of buttons) {
+                b.disabled = true;
+                b.className = "w-full text-left p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-500 text-xs sm:text-sm cursor-not-allowed";
+            }
+
+            if (selectedIndex === q.correct) {
+                quizScore += 10;
+                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 font-bold text-xs sm:text-sm";
+                feedback.textContent = "¡Correcto! Excelente comprensión del concepto.";
+                feedback.className = "p-4 rounded-xl text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 block";
+            } else {
+                buttons[selectedIndex].className = "w-full text-left p-3.5 rounded-xl bg-rose-500/20 border border-rose-500 text-rose-300 font-bold text-xs sm:text-sm";
+                buttons[q.correct].className = "w-full text-left p-3.5 rounded-xl bg-emerald-500/20 border border-emerald-500 text-emerald-300 font-bold text-xs sm:text-sm";
+                feedback.textContent = `Incorrecto. La respuesta correcta era: ${q.options[q.correct]}`;
+                feedback.className = "p-4 rounded-xl text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 block";
+            }
+
+            document.getElementById('quiz-score').textContent = `Puntaje: ${quizScore}`;
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuizIdx++;
+            if (currentQuizIdx < quizData.length) {
+                loadQuizQuestion();
+            } else {
+                // Quiz completed
+                document.getElementById('quiz-body').innerHTML = `
+                    <div class="text-center py-8 space-y-4">
+                        <i class="fa-solid fa-trophy text-5xl text-amber-400 animate-bounce"></i>
+                        <h3 class="text-2xl font-bold text-white">¡Módulo Completado!</h3>
+                        <p class="text-slate-300 text-sm">Tu puntaje final es <strong>${quizScore} / ${quizData.length * 10}</strong> puntos.</p>
+                        <button onclick="resetQuiz()" class="px-6 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs uppercase tracking-wider">Reiniciar Quiz</button>
+                    </div>
+                `;
+                document.getElementById('quiz-feedback').className = 'hidden';
+                document.getElementById('quiz-next-btn').classList.add('hidden');
+            }
+        }
+
+        function resetQuiz() {
+            currentQuizIdx = 0;
+            quizScore = 0;
+            loadQuizQuestion();
+        }
+
+        loadQuizQuestion();
+
+        // Mobile Menu Drawer
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.className = 'fa-solid fa-bars';
+            } else {
+                menuIcon.className = 'fa-solid fa-xmark';
+            }
+        });
+    </script>
 </body>
 </html>
